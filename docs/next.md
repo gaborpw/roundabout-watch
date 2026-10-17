@@ -13,7 +13,8 @@ Last updated 2026-10-17.
   - ADRs 0001–0008;
   - the research, the architecture and the parts list;
   - the shared types in `model.py`, with tests;
-  - CI: `make check` on Python 3.10 and 3.12, plus the lessons check.
+  - CI: `make check` on Python 3.12 (3.10 until the first look; ADR 0011),
+    plus the lessons check.
 - **Peter's answers (2026-10-17, `docs/vision.md`):**
   - the roundabout is the new mini-roundabout at West 45th and Bridge
     Avenue;
