@@ -24,11 +24,11 @@ when anything changes (CLAUDE.md 50).
           measure  TTC / 2D-TTC, PET, DRAC  (pure maths)       → numbers
           flag     thresholds from config.yaml                 → Event (flagged)
           clip     cut ±N s from the packet buffer, no re-encode → clips/
-          store    SQLite: events, measures, review status
+          store    SQLite: events, measures, review status, paths
    │
    ▼
- review page           on the home network only (ADR 0011): a person watches
-                       each clip and confirms or dismisses it (ADR 0002)
+ review and charts     Streamlit, on the home network only (ADR 0011, 0012):
+                       a person confirms or dismisses each clip (ADR 0002)
    │
    ▼
  enrich (later)        OHGO incidents near the roundabout, shown alongside
@@ -47,12 +47,12 @@ the rest arrive one pull request at a time, in the order under "Build order".
 | `safety.py` | Pure maths: TTC, PET, DRAC, speed difference (SSAM's DeltaS) and the conflict angle (rear-end below 30°, crossing above 85°, as in FHWA's SSAM). No camera, no GPU, no files (CLAUDE.md 30). **Exists**, with road users as discs; SSAM's rectangles (2D-TTC) are the next step. | yes |
 | `ground.py` | Turns pixels into metres. Fits a homography from at least four surveyed points in `calibration.yaml` (OpenCV `findHomography`), reports the reprojection error, and **refuses to run uncalibrated**. Projects each detection's ground-contact point (bottom-middle of its box). | yes |
 | `flag.py` | Decides what is worth a look. Near-miss: a pair whose TTC or PET falls under the configured threshold. Possible crash: two tracks overlapping on the ground, then both stopping for more than N seconds (a heuristic; ADR 0002 says a person decides). | yes |
-| `store.py` | SQLite through the standard library's `sqlite3`, parameterised queries only (CLAUDE.md 18). Events, their measures, review status and the reviewer's reason. | yes |
+| `store.py` | SQLite through the standard library's `sqlite3`, parameterised queries only (CLAUDE.md 18). Events, their measures, review status and the reviewer's reason; every road user's path and its one-line summary (ADR 0006). | yes |
 | `ingest.py` | PyAV reads go2rtc's stream (or a video file, for `replay`). Keeps a ring buffer of compressed packets so clips can start before the event. Reconnects with back-off. Strips URLs from error text before logging (CLAUDE.md 16). | file path only |
 | `detect.py` | A `Detector` protocol, with one implementation: RF-DETR through PyTorch, on the desktop's GPU (CUDA), the Mac's GPU (MPS) for `replay`, or the CPU. Maps the detector's classes to `RoadUser`. | no (needs model weights) |
 | `track.py` | ByteTrack from `trackers`; OC-SORT is the fallback if occlusion behind buses breaks tracks. | yes (on hand-built detections) |
 | `clips.py` | Writes the packet buffer around an event to an MP4 without re-encoding, so a clip costs almost no CPU and keeps the camera's quality (ADR 0007). | yes (on a fixture clip) |
-| `review/` | A small local web page: list of flagged events, play the clip, confirm or dismiss with a reason. | partly |
+| `pages/` | The Streamlit app (ADR 0012): review (play the clip, confirm or dismiss with a reason), map, when, how close, who, traffic. The numbers behind each page are plain functions. | the functions, yes |
 | `enrich.py` | Optional: OHGO incidents near the roundabout, shown next to our events. | yes (on saved JSON) |
 | `__main__.py` | `python -m roundabout_watch run` (live), `replay <video>` (a recorded file, on any machine), `calibrate` (helps fill `calibration.yaml`). | — |
 
@@ -72,15 +72,25 @@ counts that justified it (ADR 0002).
 
 ## Retention
 
-Agreed in ADR 0006 (Peter's yes, 2026-10-17):
+Set in ADR 0006 (Peter, 2026-10-17):
 
-- Continuous recording: kept 72 hours, then deleted by the sweeper.
+- Continuous recording: deleted once it is 24 hours old and processed;
+  unprocessed files go at 72 hours regardless.
 - Clips of flagged and dismissed events: kept 30 days.
 - Clips of confirmed events: kept until Peter deletes them.
+- Paths (positions and times, no picture): kept in full 90 days; a one-line
+  summary of each road user until Peter deletes it.
 
-A 4 MP H.264 stream at roughly 4–6 Mbit/s is about 45–65 GB a day (general
-knowledge estimate, to be measured on the real camera), so 72 hours needs
-roughly 135–195 GB on the desktop's drive.
+Sizes, all estimates to measure on the real camera:
+
+- A 4 MP H.264 stream at roughly 4–6 Mbit/s is about 45–65 GB a day
+  (general knowledge).
+- Paths are tens of MB a day, a few GB for 90 days: about 2,000–3,500
+  vehicles a day pass on nearby Bridge Avenue (the City's counts,
+  `docs/research/data-sources.md`), each seen for some seconds at up to
+  25 positions a second.
+- The desktop has two 12 TB hard drives (Peter, 2026-10-17), so none of
+  this is tight.
 
 ## Where it runs
 
@@ -109,6 +119,7 @@ Decided in ADR 0011 (Peter's choice, 2026-10-17). Everything stays at home.
 | `trackers` (ByteTrack, OC-SORT) | Apache-2.0 | Depends on `opencv-python`, which clashes with `opencv-python-headless`; install only one. |
 | supervision | MIT | Drawing and zones only; its ByteTrack was removed in 0.31.0 (2026-10-16). |
 | go2rtc | MIT | |
+| Streamlit | Apache-2.0 | Sends usage statistics by default; `.streamlit/config.toml` turns them off (ADR 0012). |
 | PyAV | BSD | Its wheels bundle libx264 and libx265, which are GPL (general knowledge): it matters only if the program is ever given to anyone. |
 | OpenCV | Apache-2.0 | `findHomography` for `ground.py`. |
 | Traffic Intelligence, 2D-TTC | MIT | References for `safety.py`, not dependencies. `safety.py` follows SSAM's definitions; 2D-TTC's rectangle model gets ported, with attribution, in step 1b. |
@@ -141,7 +152,8 @@ One pull request each, each with its tests, each after Peter's yes
 6. Live: go2rtc, the recorder and sweeper (retention must exist before
    continuous recording does), `ingest.py` live mode, `clips.py`, and the
    pipeline starting by itself on the desktop.
-7. `review/`: the review page.
+7. `pages/`: review and charts in Streamlit (ADR 0012), once `replay` or
+   the camera has put data in the database.
 8. `enrich.py`: OHGO incidents.
 
 ## Sources (read 2026-10-17)
