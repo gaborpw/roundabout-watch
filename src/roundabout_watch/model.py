@@ -96,6 +96,17 @@ class EventKind(str, Enum):
     POSSIBLE_CRASH = "possible_crash"
 
 
+class ConflictType(str, Enum):
+    """How two road users would have met, by the angle between their headings.
+
+    FHWA's SSAM (report FHWA-HRT-08-051): rear-end below 30°, crossing above
+    85°, lane change in between. safety.conflict_type decides it."""
+
+    REAR_END = "rear_end"
+    LANE_CHANGE = "lane_change"
+    CROSSING = "crossing"
+
+
 class EventStatus(str, Enum):
     """ADR 0002: the software only ever flags; a person confirms or dismisses."""
 
