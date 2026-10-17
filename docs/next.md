@@ -28,22 +28,22 @@ Nothing watches a camera yet.
 
 Oldest first. Each stays here until it's done or Peter drops it.
 
-1. **Yes or no on automatic reviews with OpenCodeReview**
-   (alibaba/open-code-review), and which AI provider: Cloudflare Workers AI
-   (cheap, the same account as Playthroughd's PR-Agent) or an Anthropic API
-   key. Proposed in chat on 2026-10-17. It needs an API key that only Peter
-   can add, as a GitHub Actions secret.
-2. **How far the window is from the circle, and which floor.** That
-   decides the lens.
-3. **Which camera, around $100, behind glass.** A shortlist is being
-   researched; ADR 0005 and `docs/parts.md` get revised in their own pull
-   request.
-4. **Order the parts** once 3 is settled. Re-check stock first.
+1. **Turn on the automatic review** (ADR 0009, Peter chose Anthropic,
+   2026-10-17). It needs an Anthropic API key, created at
+   console.anthropic.com, preferably in its own workspace with a monthly
+   spend limit. It goes in the repository's Actions secrets as
+   `OCR_LLM_AUTH_TOKEN`, with `OCR_LLM_URL`. `OCR_LLM_MODEL` and
+   `OCR_LLM_PROTOCOL` go in its variables. Until then the review job
+   passes without reviewing. The exact steps are in the chat of
+   2026-10-17. Never put the key in chat or the repo.
+2. **Order the parts** once the camera pull request is merged. Re-check
+   stock first.
 
 ## Next
 
-1. The ~$100 camera for a window, and the parts list without the outdoor
-   items (ADR 0005, `docs/parts.md`).
+1. The camera for the window, ADR 0005 and the parts list. Peter said yes
+   on 2026-10-17. The window is on the second floor, 30–40 feet (about
+   9–12 m) from the circle.
 2. Build step 1 in `docs/architecture.md`: `safety.py` (TTC, 2D-TTC, PET,
    DRAC, conflict angle), as its own pull request with hand-worked tests. It
    needs no hardware, so it can start before the parts arrive.

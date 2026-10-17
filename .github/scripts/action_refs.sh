@@ -19,6 +19,9 @@ while IFS= read -r ref; do
     echo "$ref: no tag or branch '$version' in github.com/$repo"
     bad=1
   fi
-done < <(grep -hoE 'uses:[[:space:]]*[^[:space:]#]+' "$dir"/*.yml \
-  | sed -E 's/uses:[[:space:]]*//' | grep -vE '^(\./|docker://)' | sort -u)
+# Only real `uses:` keys (optionally after a list dash) count; the word in
+# a comment does not.
+done < <(grep -hE '^[[:space:]]*(-[[:space:]]+)?uses:' "$dir"/*.yml \
+  | sed -E 's/^[[:space:]]*(-[[:space:]]+)?uses:[[:space:]]*//; s/[[:space:]]*#.*$//' \
+  | grep -vE '^(\./|docker://)' | sort -u)
 exit "$bad"
