@@ -77,6 +77,5 @@ Later the same day:
 
 ## Not decided yet
 
-Tracked in `docs/next.md`:
-
-- **Which camera**, settled in the camera pull request.
+Nothing about the setup. The camera is a Reolink CX410 behind the window
+(ADR 0005); open steps are in `docs/next.md`.

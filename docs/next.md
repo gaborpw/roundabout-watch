@@ -20,7 +20,9 @@ Last updated 2026-10-17.
   - the camera looks out through one of Peter's windows;
   - a camera around $100;
   - the results are for personal interest;
-  - yes to ADRs 0003, 0004, 0006, 0007 and 0008, now accepted.
+  - yes to ADRs 0003, 0004, 0006, 0007 and 0008, now accepted;
+  - the window is on the second floor, 30–40 feet (about 9–12 m) from
+    the circle, so the camera is a Reolink CX410 (ADR 0005, accepted).
 
 Nothing watches a camera yet.
 
@@ -36,14 +38,12 @@ Oldest first. Each stays here until it's done or Peter drops it.
    `OCR_LLM_PROTOCOL` go in its variables. Until then the review job
    passes without reviewing. The exact steps are in the chat of
    2026-10-17. Never put the key in chat or the repo.
-2. **Order the parts** once the camera pull request is merged. Re-check
-   stock first.
+2. **Order the parts** in `docs/parts.md`. The camera is a Reolink CX410
+   behind the window (ADR 0005), about $798 in all. Re-check stock first;
+   the Jetson at SparkFun is back-ordered.
 
 ## Next
 
-1. The camera for the window, ADR 0005 and the parts list. Peter said yes
-   on 2026-10-17. The window is on the second floor, 30–40 feet (about
-   9–12 m) from the circle.
-2. Build step 1 in `docs/architecture.md`: `safety.py` (TTC, 2D-TTC, PET,
+1. Build step 1 in `docs/architecture.md`: `safety.py` (TTC, 2D-TTC, PET,
    DRAC, conflict angle), as its own pull request with hand-worked tests. It
    needs no hardware, so it can start before the parts arrive.
