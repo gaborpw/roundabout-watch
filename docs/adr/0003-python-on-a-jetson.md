@@ -1,6 +1,7 @@
 # 3. Python, on a Jetson next to the camera
 
-- **Status:** accepted (Peter's yes, 2026-10-17)
+- **Status:** superseded by ADR 0011 (2026-10-17): Peter's own desktop
+  runs it, so there is no Jetson. Python stays; the 3.10 fallback goes.
 - **Date:** 2026-10-17
 
 ## Context

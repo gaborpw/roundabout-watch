@@ -47,8 +47,8 @@ Its specs, from Reolink's product page:
 - **Power:** PoE (IEEE 802.3af), or 12 V DC with an adapter sold
   separately.
 
-It connects by one cable through a PoE adapter straight to the Jetson's
-Ethernet port, so it has no route to anything else (CLAUDE.md 22).
+It connects by one cable through a PoE adapter straight to the desktop's
+Ethernet port, so it has no route to anything else (CLAUDE.md 22, ADR 0011).
 
 Settings to make once, in Reolink's app or desktop client (Reolink says RTSP
 and ONVIF are turned on there):

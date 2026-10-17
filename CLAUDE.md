@@ -196,8 +196,8 @@ dataset, so privacy is part of security here.
     it: hardware specs and prices, library versions and APIs, model
     licences, recording and privacy law, safety-measure thresholds, API
     limits.
-42. **Primary sources first.** The owner's own docs: NVIDIA (Jetson,
-    JetPack, TensorRT), the detector's and tracker's own docs and repos,
+42. **Primary sources first.** The owner's own docs: NVIDIA (CUDA, its
+    drivers, TensorRT), PyTorch, the detector's and tracker's own docs and repos,
     OpenCV, docs.python.org, PyPI, the camera maker's spec sheets and
     manuals, ODOT's OHGO API docs, the Ohio Revised Code
     (codes.ohio.gov), FHWA reports, and peer-reviewed papers for
@@ -271,8 +271,8 @@ dataset, so privacy is part of security here.
   settings page, a product page, a document) is a clickable markdown link.
   A link that is a guess says so.
 - Terminal steps say which folder to `cd` into first, with the commands in a
-  code block that can be copied. Say which machine: the Mac, the Windows PC, or the
-  Jetson next to the camera.
+  code block that can be copied. Say which machine: the Mac (testing) or
+  the Windows desktop next to the camera (runs it; ADR 0011).
 - **Anything to buy** links the exact product page, confirmed to exist and
   be in stock, with the price and the date it was checked, and goes in
   [`docs/parts.md`](docs/parts.md) as a checklist with a total. Things Peter

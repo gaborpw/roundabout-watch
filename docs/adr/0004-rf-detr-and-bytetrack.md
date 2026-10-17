@@ -18,9 +18,9 @@ service means open-sourcing everything or buying their Enterprise licence.
 
 - **Detector: RF-DETR Small or Medium** (Roboflow, Apache-2.0). On COCO,
   Small scores 53.0 AP at 3.5 ms and Medium 54.7 AP at 4.4 ms (T4 GPU,
-  TensorRT FP16, Roboflow's figures). Exported to ONNX, then built into a
-  TensorRT FP16 engine on the Jetson itself. Pick between Small and Medium
-  by measuring both on our own footage.
+  TensorRT FP16, Roboflow's figures). It runs through PyTorch on the
+  desktop's RTX 3080 Ti, and on the Mac's GPU for testing (ADR 0011).
+  Pick between Small and Medium by measuring both on our own footage.
 - Only the Apache-2.0 sizes (Nano, Small, Medium, Large). Atto, Femto,
   Pico, XL and 2XL are under PML 1.0 and are not used.
 - **Tracker: ByteTrack** from Roboflow's `trackers` package (Apache-2.0),
@@ -32,21 +32,19 @@ service means open-sourcing everything or buying their Enterprise licence.
 
 ## Consequences
 
-- Exporting RF-DETR needs a heavy PyTorch toolchain once; the Jetson then
-  runs only the TensorRT engine.
+- PyTorch with CUDA is a large install on the desktop. A TensorRT engine
+  is the next step only if PyTorch is too slow (ADR 0011).
 - **Trade-off:** we give up Ultralytics' larger ecosystem and tutorials for
   a licence that never forces the code open or costs a fee.
 - `trackers` depends on `opencv-python`; we must not also install
   `opencv-python-headless`, or the two collide.
 - supervision 0.31.0 (2026-10-16) removed its own ByteTrack, so older
   tutorials using `sv.ByteTrack` no longer work.
-- Neither choice has been measured on an Orin Nano or on this camera yet.
-  Roboflow measured RF-DETR Nano at 6.0 ms on an Orin NX, a faster board.
+- Neither choice has been measured on the desktop or on this camera yet.
 
 ## Sources (read 2026-10-17)
 
 - RF-DETR: https://github.com/roboflow/rf-detr
-- RF-DETR on Jetson: https://roboflow.com/blog/rf-detr-nvidia-deepstream
 - Ultralytics licence: https://www.ultralytics.com/license
 - trackers: https://pypi.org/project/trackers
 - supervision releases: https://github.com/roboflow/supervision/releases
