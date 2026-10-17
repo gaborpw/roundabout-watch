@@ -104,7 +104,7 @@ Then, on what runs it:
   home network only.
 - **Record it and chart it, a lot.** Every crash and near-miss is recorded and
   shown in charts, not only listed. Which charts, and what is kept to draw
-  them, is still to be agreed (`docs/next.md`).
+  them, Peter settled next (below; ADR 0006 and 0012).
 - **It's for fun.** That doesn't loosen the rules: a flagged event is still
   a candidate until Peter confirms it (ADR 0002).
 

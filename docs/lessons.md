@@ -19,6 +19,15 @@ Newest first. Format: date, what happened, cause, guard.
 
 ## 2026-10-17
 
+- **A merged pull request never reached `main`.** PR #9 was opened on top
+  of PR #8's branch, so it could be reviewed before #8 merged. Peter merged
+  #8, then #9, and #9 went into #8's old branch instead of `main`: its
+  retention and chart decisions were missing from `main`. Cause: a stacked
+  pull request keeps the base it was opened with; nothing retargets it when
+  that base merges. The change reached `main` through PR #10, which was
+  built on #9. Guard: CI fails any pull request whose base isn't `main`
+  ("Pull requests merge into main", in the Lessons job), so a stacked one
+  is red until it's pointed at `main`.
 - **CI never ran on the first pull request.** Both `make check` jobs failed
   in seconds with "unable to find version `v10`" (PR #1). The workflow said
   `astral-sh/setup-uv@v10`, written from the releases page (v10.3.0) on the

@@ -37,6 +37,19 @@ jobs:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
+      # A stacked pull request merges into its base branch, not main, even
+      # after that base has merged: PR #9's change was lost that way
+      # (docs/lessons.md). A step here rather than its own job, because each
+      # job is billed at least a minute.
+      - name: Pull requests merge into main
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ "$BASE_REF" != main ]; then
+            echo "This pull request merges into '$BASE_REF', not main. Point it at main before merging."
+            exit 1
+          fi
       - name: Every fix commit adds to docs/lessons.md
         env:
           EVENT: ${{ github.event_name }}
