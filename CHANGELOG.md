@@ -6,6 +6,13 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **A first look on a video** (Peter's yes, 2026-10-17; build step 1a).
+  `python -m roundabout_watch replay VIDEO` finds cars, bikes and people
+  with RF-DETR, follows each with ByteTrack and writes a copy with boxes,
+  numbers and trails, so the detector can be seen on the real roundabout
+  before calibration. Python moves to 3.12 (ADR 0011), and CI tests 3.12
+  only; RF-DETR is an optional extra CI never installs.
+
 - **The near-miss maths exists** (Peter's go-ahead, 2026-10-17; build step
   1). `safety.py` measures time to collision, post-encroachment time, the
   braking needed to avoid a crash, the speed difference and the conflict

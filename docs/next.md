@@ -51,10 +51,11 @@ Oldest first. Each stays here until it's done or Peter drops it.
 
 ## Next
 
-1. **First look** (Peter's yes, 2026-10-17): `replay` runs RF-DETR and
-   ByteTrack on a video file and writes a copy with a box and a trail on
-   every road user. No near-miss numbers yet; those need calibration. It
-   moves `pyproject.toml` and CI to Python 3.12 (ADR 0011).
+1. **First look, on Peter's video.** `replay` exists (build step 1a): it
+   runs RF-DETR and ByteTrack on a video file and writes a copy with a box
+   and a trail on every road user (README, "Try it on a video"). Run it on
+   the phone video and look at what it misses. No near-miss numbers yet;
+   those need calibration.
 2. Build step 1b: rectangles instead of discs in `safety.py` (2D-TTC).
    Then step 2, `config.py` and `ground.py` (calibration). Neither needs
    hardware.
