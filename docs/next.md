@@ -23,6 +23,9 @@ Last updated 2026-10-17.
   - yes to ADRs 0003, 0004, 0006, 0007 and 0008, now accepted;
   - the window is on the second floor, 30–40 feet (about 9–12 m) from
     the circle, so the camera is a Reolink CX410 (ADR 0005, accepted).
+- **Automatic review is on** (ADR 0010). Peter added
+  `CLAUDE_CODE_OAUTH_TOKEN` on 2026-10-17, so OpenCodeReview reviews each
+  pull request on his Claude subscription.
 
 Nothing watches a camera yet.
 
@@ -30,12 +33,7 @@ Nothing watches a camera yet.
 
 Oldest first. Each stays here until it's done or Peter drops it.
 
-1. **Turn on the automatic review** (ADR 0010, Peter's Claude
-   subscription, 2026-10-17). On the Mac, `claude setup-token` makes a
-   token. It goes in the repository's Actions secrets as
-   `CLAUDE_CODE_OAUTH_TOKEN`; nothing else is needed. Until then the review
-   job passes without reviewing. Never put the token in chat or the repo.
-2. **Order the parts** in `docs/parts.md`. The camera is a Reolink CX410
+1. **Order the parts** in `docs/parts.md`. The camera is a Reolink CX410
    behind the window (ADR 0005), about $798 in all. Re-check stock first;
    the Jetson at SparkFun is back-ordered.
 
