@@ -1,6 +1,8 @@
 # 5. The camera: standard RTSP and ONVIF, chosen for the code
 
-- **Status:** proposed (waiting on Peter's choice, `docs/next.md`)
+- **Status:** proposed (waiting on Peter's choice, `docs/next.md`). On
+  2026-10-17 Peter said the camera will look out through a window and asked
+  for one around $100; this ADR is being revised for both.
 - **Date:** 2026-10-17
 
 ## Context

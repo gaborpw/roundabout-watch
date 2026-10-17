@@ -36,15 +36,36 @@ date.
 - **Run it the way Playthroughd runs.** Same rules, same records, same
   review process (CLAUDE.md).
 
+## Peter's answers
+
+2026-10-17, quoted as written:
+
+> its the new roundabout on west 45th and bridge ave, cleveland ohio 44113.
+> can we use that one gods view github repo for tracking maybe?
+
+> 2. yes 3. camera mount is through my windowi can see ity rhough one of my
+> windows. and is there a camera for around 100? 5. yes 6. personal interest
+
+What they settle:
+
+- **The roundabout:** the new mini-roundabout at West 45th Street and Bridge
+  Avenue, Ohio City, 44113. It is one of the City's quick-build traffic
+  circles (paint and flexible posts), installed in late August 2026
+  (`docs/research/data-sources.md`).
+- **The camera looks out through one of Peter's windows.** Nothing is
+  mounted outside, and the camera sits indoors behind glass (ADR 0005 is
+  being revised for it).
+- **Budget:** a camera around $100.
+- **What the results are for: personal interest.** Nothing is published or
+  shared; the City's own evaluation of the circles is in 2027, and sharing
+  anything with them later would be a new decision (CLAUDE.md 46).
+- **God's Eye View is not a tracker** (`docs/research/references.md`).
+- **ADRs 0003, 0004, 0006, 0007 and 0008: yes.**
+
 ## Not decided yet
 
-These are open questions for Peter, tracked in `docs/next.md`:
+Tracked in `docs/next.md`:
 
-- **What the results are for.** Personal interest, evidence for the city
-  (Cleveland's Vision Zero programme), or something to share publicly.
-  This decides how much review, privacy work and documentation the results
-  need.
-- **Which roundabout, and where the camera mounts.** Peter's own building,
-  someone else's with permission, or a city pole (which needs the city's
-  permission).
-- **Who sees the clips.** Peter only, or others.
+- **How far the window is from the circle**, and which floor, which decide
+  the lens.
+- **Which camera**, around $100.

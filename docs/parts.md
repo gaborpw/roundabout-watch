@@ -5,6 +5,12 @@ Everything to buy, as a checklist. Prices and stock were read on
 Re-check before ordering: stock below says "only 3 left" in places.
 Why each part was chosen is in ADR 0005 (camera) and ADR 0003 (computer).
 
+> **Don't order yet (2026-10-17).** Peter will point the camera out through
+> a window, not mount it outside, and asked for a camera around $100. The
+> camera, junction box, outdoor cable and surge protector below are being
+> reconsidered for that; the Jetson, SSD and switch still stand. This list
+> is updated in the next pull request.
+
 Several big stores (Amazon, B&H, Newegg, Micro Center, Best Buy, Walmart,
 amcrest.com) blocked the automated check, so the links below are the stores
 that could be read, not necessarily the cheapest. If you find a part

@@ -1,6 +1,6 @@
 # 3. Python, on a Jetson next to the camera
 
-- **Status:** proposed (waiting on Peter's yes, `docs/next.md`)
+- **Status:** accepted (Peter's yes, 2026-10-17)
 - **Date:** 2026-10-17
 
 ## Context

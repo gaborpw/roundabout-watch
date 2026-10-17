@@ -1,6 +1,6 @@
 # 6. Positions, not people: privacy and retention
 
-- **Status:** proposed (waiting on Peter's yes, `docs/next.md`)
+- **Status:** accepted (Peter's yes, 2026-10-17)
 - **Date:** 2026-10-17
 
 ## Context
@@ -42,8 +42,8 @@ identities.
 - **Trade-off:** no long archive. Anything older than 72 hours that wasn't
   flagged is gone, and a pattern that needs months of raw video can't be
   studied.
-- The retention numbers are a proposal. Changing them is Peter's call and
-  updates this ADR.
+- Peter agreed to these retention numbers on 2026-10-17. Changing them is
+  Peter's call and updates this ADR.
 
 ## Sources (read 2026-10-17)
 

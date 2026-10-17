@@ -72,7 +72,7 @@ counts that justified it (ADR 0002).
 
 ## Retention
 
-Proposed in ADR 0006, waiting on Peter's yes:
+Agreed in ADR 0006 (Peter's yes, 2026-10-17):
 
 - Continuous recording: kept 72 hours, then deleted by the sweeper.
 - Clips of flagged and dismissed events: kept 30 days.

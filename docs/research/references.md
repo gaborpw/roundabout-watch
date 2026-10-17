@@ -44,6 +44,12 @@ This project is the glue, the calibration and the review loop.
 **Licence warning:** most crash datasets are non-commercial only. If this
 project ever earns money, check each before training on it (CLAUDE.md 25).
 
+## Looked at and not used
+
+| Project | What it is | Why not |
+|---|---|---|
+| [God's Eye View](https://github.com/bilawalsidhu/gods-eye-view) (bilawalsidhu, MIT, ~57k stars) | A 3D globe in the browser (CesiumJS) showing public camera feeds, aircraft, ships and simulated traffic. | It doesn't detect or track anything in video: its traffic is "simulated vehicles on OSM roads" and "individual vehicle positions are not live observations". Detection is only a proposal on a fork ([issue #89](https://github.com/kvnloo/gods-eye-view/issues/89), via search result). It has no Ohio cameras. Showing our camera on it would break ADR 0006 (footage stays on the Jetson). At most, a reference for a map of confirmed events later. Checked 2026-10-17 at Peter's question. |
+
 ## Papers using the same method
 
 - US DOT, real-time intersection safety monitoring from video (YOLO-v5 +
