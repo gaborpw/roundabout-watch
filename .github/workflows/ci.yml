@@ -65,7 +65,9 @@ jobs:
         python: ["3.10", "3.12"]
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      # setup-uv publishes full versions only (no v10 tag): checked by
+      # .github/scripts/action_refs.sh in make check.
+      - uses: astral-sh/setup-uv@v10.3.0
         with:
           python-version: ${{ matrix.python }}
       - run: uv sync --locked

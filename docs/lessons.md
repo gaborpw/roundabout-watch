@@ -17,6 +17,17 @@ How it works:
 
 Newest first. Format: date, what happened, cause, guard.
 
+## 2026-10-17
+
+- **CI never ran on the first pull request.** Both `make check` jobs failed
+  in seconds with "unable to find version `v10`" (PR #1). The workflow said
+  `astral-sh/setup-uv@v10`, written from the releases page (v10.3.0) on the
+  assumption that a floating major tag exists, as it does for
+  `actions/checkout@v7`. setup-uv publishes only full versions. Guard:
+  `.github/scripts/action_refs.sh` checks every `uses:` ref against GitHub
+  with `git ls-remote` and runs in `make check`, so a missing tag fails
+  before the push.
+
 ## Carried over from Playthroughd (2026-10-17)
 
 These happened on Peter's other project. They are here because the same

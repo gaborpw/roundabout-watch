@@ -25,7 +25,9 @@ typecheck: ## mypy --strict over src and tests
 test: ## The test suite (no camera, no GPU needed)
 	uv run pytest
 
-scripts: ## The CI scripts themselves still parse
+scripts: ## The CI scripts parse, and the workflows name actions that exist (needs network)
 	bash -n .github/scripts/lessons.sh
 	bash -n .github/scripts/pipefail.sh
+	bash -n .github/scripts/action_refs.sh
 	.github/scripts/pipefail.sh
+	.github/scripts/action_refs.sh
