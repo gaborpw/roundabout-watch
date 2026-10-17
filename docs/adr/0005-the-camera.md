@@ -1,83 +1,104 @@
-# 5. The camera: standard RTSP and ONVIF, chosen for the code
+# 5. The camera: a Reolink CX410 behind Peter's window
 
-- **Status:** proposed (waiting on Peter's choice, `docs/next.md`). On
-  2026-10-17 Peter said the camera will look out through a window and asked
-  for one around $100; this ADR is being revised for both.
-- **Date:** 2026-10-17
+- **Status:** accepted (Peter's yes to the camera change, 2026-10-17)
+- **Date:** 2026-10-17. Supersedes this ADR's first version, which chose an
+  outdoor EmpireTech (Dahua) camera before the window and the budget were
+  known.
 
 ## Context
 
-Peter's ask: the camera should be the easiest to set up and certain to
-work with the code. The code reads the camera only through **RTSP** (the
-video stream), with **H.264** video, through go2rtc (ADR 0007). It never
-uses a maker's app, cloud or software. So any camera that serves RTSP
-reliably, in H.264, without a cloud account, is compatible. The rest of the
-choice is about reliability and picture quality at a roundabout, day and
-night.
+Peter's asks: the camera should be easy to set up and certain to work with
+the code, cost around $100, and look out through one of Peter's windows. The
+window is on the second floor, 30–40 feet (about 9–12 m) from the
+mini-roundabout at West 45th and Bridge Avenue (`docs/vision.md`).
 
-What the code needs from the camera:
+What the code needs from the camera (ADR 0007): an **H.264** stream it can
+read through go2rtc, normally **RTSP**. go2rtc can also read RTMP and
+HTTP-FLV and pass them on as RTSP, so a camera whose RTSP is unreliable still
+works. The camera's maker app and cloud are never used by the code.
 
-- RTSP main stream in H.264, 25–30 fps, 4 MP or so.
-- A settable keyframe interval (1 s), so clips can start close to the event.
-- ONVIF, so go2rtc and other tools can find and configure it.
-- PoE, so one cable carries power and data.
-- A motorised zoom lens, to frame the roundabout from wherever it can be
-  mounted.
-- A large sensor for night (Frigate's docs: "Larger sensors are better than
-  higher resolutions; especially at night").
-- Works fully offline (CLAUDE.md 22).
+What a window needs:
 
-Frigate's docs rank brands for reliable RTSP: "I recommend Dahua, Hikvision,
-and Amcrest in that order", and they warn that Reolink's RTSP "isn't always
-reliable on all hardware versions".
+- **No infrared.** Infrared night vision reflects straight back off the glass
+  and whites out the picture.
+- **The lens pressed against the glass**, and the room darker than the
+  street, so the glass doesn't mirror the room.
+- **A large sensor**, because at night there is only street light to work
+  with.
 
-## Decision (proposed)
+Reolink's own guide to cameras behind glass and How-To Geek's say the same
+three things.
 
-**EmpireTech IPC-T54IR-ZE-S3**, a Dahua camera: 4 MP, 1/1.8" sensor,
-2.7–12 mm motorised zoom (115° to 47° across), H.264/H.265, RTSP, ONVIF
-Profile S/G/T, PoE 802.3af, IP67, $261.24 (`docs/parts.md`).
+At 9–12 m no zoom is needed. A lens about 89° wide covers 17.6–23.6 m of
+ground across, enough for the circle and its approaches. At 2560 pixels
+across that is about 108–145 pixels a metre (my arithmetic).
 
-The code is written so the camera can be swapped: its only link to the
-camera is the RTSP address in `.env`. Any of the alternatives below works
-with no code change.
+## Decision
 
-## The FCC question
+**Reolink CX410**, $84.99 at Reolink's US store, in stock on 2026-10-17.
+Its specs, from Reolink's product page:
 
-Dahua (and so Amcrest, which sells Dahua-made cameras) is on the FCC's
-Covered List. Since 2022 the FCC has refused new equipment authorisations
-for these makers. Buying and using a camera already sold in the US doesn't
-appear to be banned, but the FCC has asked for comment on restricting
-previously authorised equipment. This was read in news and industry
-reports, not in FCC guidance; the FCC's own page refused the automated read
-(403). **Peter decides**, knowing that:
+- **Picture:** 1/1.8" sensor, f=4 mm F1.0 lens, 89° across by 46° up and
+  down; 2560×1440 at up to 30 fps (25 by default).
+- **Video:** H.264 only. RTSP, RTMP and ONVIF.
+- **No infrared at all.** Night colour comes from the large sensor and a
+  warm spotlight, which stays **off** here: it would reflect off the glass
+  too.
+- **Power:** PoE (IEEE 802.3af), or 12 V DC with an adapter sold
+  separately.
 
-- Our design already treats the camera as untrusted: it never reaches the
-  internet (CLAUDE.md 22), which removes most of the security concern
-  behind the listing.
-- The alternative that avoids the question is **Hanwha Vision XNO-6083R**
-  (Korean): 2 MP, 2.8–12 mm motorised zoom, RTSP, ONVIF, H.264, $1,039.99 and
-  back-ordered. **Trade-off:** about four times the price for a lower
-  resolution, in exchange for a maker that isn't on the list.
+It connects by one cable through a PoE adapter straight to the Jetson's
+Ethernet port, so it has no route to anything else (CLAUDE.md 22).
+
+Settings to make once, in Reolink's app or desktop client (Reolink says RTSP
+and ONVIF are turned on there):
+
+- main stream H.264, 25–30 fps, keyframe interval 1 s;
+- spotlight off, microphone off (CLAUDE.md 20);
+- cloud and P2P off;
+- a fixed IP address;
+- a new password.
+
+## Alternatives
+
+- **Reolink E1 Outdoor**, $113.99. Its 3× zoom (90° to 50°) would be the pick
+  from further away. Here it is worse: 20 fps and a small 1/2.7" sensor, and
+  it's powered by a 12 V adapter, not over the network cable.
+- **EmpireTech IPC-T54IR-ZE-S3 (Dahua)**, $261.24, this ADR's first choice
+  for an outdoor mount. It is over budget, its infrared is wasted behind
+  glass, and Dahua is on the FCC Covered List (FCC DA 21-309). The FCC's June
+  2026 order (DA 26-635) bars importing and marketing their approved gear
+  for public-safety, government and national-security uses, not home use.
+  Reolink and TP-Link aren't named in any FCC notice we read.
+- **Tapo C325WB** ($74.99). Its view is too wide, and Tapo says it is "not
+  recommended to be used indoors".
 
 ## Consequences
 
-- At its narrowest (47°) the lens frames a roundabout from about 30–60 m
-  away. Further away needs an 8–32 mm model, and EmpireTech's infrared
-  version of that was sold out. Measure the distance before ordering.
-- The camera's own "smart" features (its AI, its app, P2P) are switched off;
-  the Jetson does the analysis.
-- The RTSP address for Dahua and Amcrest is
-  `rtsp://USER:PASSWORD@CAMERA-IP/cam/realmonitor?channel=1&subtype=0`, and
-  it goes only in `.env` (CLAUDE.md 15, 16).
+- **Reolink's RTSP is the known weak point.** Frigate's docs say it "isn't
+  always reliable" and recommend Reolink's HTTP streams; go2rtc lists Reolink
+  RTMP as tested. If the RTSP stream drops frames, go2rtc reads RTMP or
+  HTTP-FLV instead, and the code doesn't change.
+- **Setup needs Reolink's app or client once.** Whether that needs a Reolink
+  account isn't confirmed (`docs/research/verify.md`).
+- **Night images will be grainy** with only street light. Detections at night
+  will be worse than by day; measure it before trusting night events.
+- **If the City rebuilds the circle in concrete** (2027), or the camera moves,
+  the calibration has to be redone (CLAUDE.md: measurements are in metres,
+  never pixels).
+- **Trade-off:** the cheapest camera that fits, at the cost of Reolink's
+  weaker RTSP and a fixed lens that wouldn't suit a window further away.
 
 ## Sources (read 2026-10-17)
 
-- Frigate hardware recommendations: https://docs.frigate.video/frigate/hardware
-- Frigate camera-specific notes (Reolink, Dahua URL):
-  https://docs.frigate.video/configuration/camera_specific
-- Camera page and specs: https://empiretech01.com/products/empiretech-ipc-t54ir-ze-s3-1-1-8-cmos-4mp-ir-starlight-vari-focal-turret-security-camera
-- Hanwha XNO-6083R page and specs: https://ipsecuritydepot.com/hanwha-xno-6083r-2mp-outdoor-ai-ir-bullet-network-ip-camera/xno-6083r
-- FCC Covered List: https://www.fcc.gov/supplychain/coveredlist (returned 403);
-  reports: https://www.campussafetymagazine.com/news/fcc-bans-new-equipment-sales-of-hikvision-dahua-hytera/
-  and https://www.securityinfowatch.com/video-surveillance/article/21227289/fcc-moves-one-step-closer-to-banning-hikvision-dahua-products
-  (via search result)
+- Reolink CX410 page and offer data (price, stock, specs; the 12 V adapter
+  "purchased separately"): https://reolink.com/us/product/cx410/
+- Reolink E1 Outdoor: https://reolink.com/us/product/e1-outdoor/
+- Behind glass: https://reolink.com/blog/security-cameras-through-behind-window-glass/
+  and https://www.howtogeek.com/407363/how-to-make-a-security-cameras-night-vision-work-through-a-window/
+- Frigate on camera brands and Reolink RTSP: https://docs.frigate.video/frigate/hardware
+  and https://docs.frigate.video/configuration/camera_specific
+- go2rtc sources (RTMP, HTTP-FLV; Reolink notes): https://github.com/AlexxIT/go2rtc
+- FCC: https://docs.fcc.gov/public/attachments/DA-21-309A1.pdf and
+  https://docs.fcc.gov/public/attachments/DA-26-635A1.pdf
+- Tapo C325WB specs: https://www.tapo.com/us/product/tapo-c325wb-security-camera/v1/1-pack/specs/
