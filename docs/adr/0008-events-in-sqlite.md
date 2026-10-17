@@ -1,4 +1,4 @@
-# 8. Events in SQLite on the Jetson
+# 8. Events in SQLite
 
 - **Status:** accepted (Peter's yes, 2026-10-17)
 - **Date:** 2026-10-17

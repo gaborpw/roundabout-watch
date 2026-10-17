@@ -69,4 +69,4 @@ findings are claims to verify, not orders:
 
 Open with a one-line tally, such as "1 Must fix, 2 Minor, 0 Old problem", or
 "No blocking problems." when there is no Must fix. Then the findings, then
-what you could not check (for example: "not run on the Jetson").
+what you could not check (for example: "not run on the desktop's GPU").

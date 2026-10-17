@@ -84,7 +84,34 @@ Then, on the review:
 - **The review runs on Peter's Claude subscription**, through
   OpenCodeReview's delegation mode, not a paid API key (ADR 0010).
 
+Then, on what runs it:
+
+> i dont need this lol can i use a raspberry pi or have my mac or desktop
+> running it?
+
+> I have a m4 air and a 3080 ti desktop.
+
+> well when i say onine what do we mean? i want to track all crashes and
+> near misses, and record that data and visuaize it a lot. i can have that
+> all local this is just for fun
+
+> desktop is near a window yes and i have oing ethernet cords, it can use
+> both wifi and ethernet
+
+- **No Jetson.** The desktop with the RTX 3080 Ti runs it all day; the M4
+  Air is for testing (ADR 0011).
+- **Everything stays at home.** No cloud, no website; the pages are on the
+  home network only.
+- **Record it and chart it, a lot.** Every crash and near-miss is recorded and
+  shown in charts, not only listed. Which charts, and what is kept to draw
+  them, is still to be agreed (`docs/next.md`).
+- **It's for fun.** That doesn't loosen the rules: a flagged event is still
+  a candidate until Peter confirms it (ADR 0002).
+
 ## Not decided yet
 
-Nothing about the setup. The camera is a Reolink CX410 behind the window
-(ADR 0005); open steps are in `docs/next.md`.
+- Which charts, and whether every road user's path (positions only) is kept
+  to draw them, and for how long (`docs/next.md`).
+
+The camera is a Reolink CX410 behind the window (ADR 0005); open steps are
+in `docs/next.md`.

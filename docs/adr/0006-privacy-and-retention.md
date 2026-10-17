@@ -28,9 +28,10 @@ identities.
 
   The sweeper that deletes old footage ships in the same pull request as
   the recorder, never after it.
-- **Footage stays on the Jetson.** Nothing is uploaded. Sharing a clip with
-  anyone (the city, the police, online) is Peter's decision each time, after
-  checking with a lawyer before the first time.
+- **Footage stays at home, on Peter's desktop** (ADR 0011; this said the
+  Jetson before). Nothing is uploaded. Sharing a clip with anyone (the
+  city, the police, online) is Peter's decision each time, after checking
+  with a lawyer before the first time.
 - **The camera stays on its own network**, with no route to the internet
   (CLAUDE.md 22).
 

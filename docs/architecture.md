@@ -18,7 +18,7 @@ when anything changes (CLAUDE.md 50).
    └──► roundabout-watch  (one Python process)
           ingest   PyAV reads the stream; keeps the last ~30 s of compressed
                    packets in memory; decodes frames
-          detect   RF-DETR (TensorRT FP16 on the Jetson)      → Detection, pixels
+          detect   RF-DETR (PyTorch on the desktop's GPU)     → Detection, pixels
           track    ByteTrack (trackers package)                → tracks, pixels
           ground   homography from calibration.yaml            → Track, metres
           measure  TTC / 2D-TTC, PET, DRAC  (pure maths)       → numbers
@@ -27,7 +27,8 @@ when anything changes (CLAUDE.md 50).
           store    SQLite: events, measures, review status
    │
    ▼
- review page (local)   a person watches each clip: confirm or dismiss (ADR 0002)
+ review page           on the home network only (ADR 0011): a person watches
+                       each clip and confirms or dismisses it (ADR 0002)
    │
    ▼
  enrich (later)        OHGO incidents near the roundabout, shown alongside
@@ -36,7 +37,7 @@ when anything changes (CLAUDE.md 50).
 ## Modules
 
 All in `src/roundabout_watch/`. Each stage takes and returns the types in
-`model.py` and nothing else (CLAUDE.md 29). Today only `model.py` exists;
+`model.py` and nothing else (CLAUDE.md 29). Today `model.py` and `safety.py` exist;
 the rest arrive one pull request at a time, in the order under "Build order".
 
 | Module | Job | Runs in CI? |
@@ -48,16 +49,15 @@ the rest arrive one pull request at a time, in the order under "Build order".
 | `flag.py` | Decides what is worth a look. Near-miss: a pair whose TTC or PET falls under the configured threshold. Possible crash: two tracks overlapping on the ground, then both stopping for more than N seconds (a heuristic; ADR 0002 says a person decides). | yes |
 | `store.py` | SQLite through the standard library's `sqlite3`, parameterised queries only (CLAUDE.md 18). Events, their measures, review status and the reviewer's reason. | yes |
 | `ingest.py` | PyAV reads go2rtc's stream (or a video file, for `replay`). Keeps a ring buffer of compressed packets so clips can start before the event. Reconnects with back-off. Strips URLs from error text before logging (CLAUDE.md 16). | file path only |
-| `detect.py` | A `Detector` protocol, with one implementation: RF-DETR via TensorRT on the Jetson, or via PyTorch on a laptop for `replay`. Maps the detector's classes to `RoadUser`. | no (needs model weights) |
+| `detect.py` | A `Detector` protocol, with one implementation: RF-DETR through PyTorch, on the desktop's GPU (CUDA), the Mac's GPU (MPS) for `replay`, or the CPU. Maps the detector's classes to `RoadUser`. | no (needs model weights) |
 | `track.py` | ByteTrack from `trackers`; OC-SORT is the fallback if occlusion behind buses breaks tracks. | yes (on hand-built detections) |
-| `clips.py` | Writes the packet buffer around an event to an MP4 without re-encoding; the Orin Nano has no hardware video encoder (NVIDIA's multimedia guide lists its encoding as software only). | yes (on a fixture clip) |
+| `clips.py` | Writes the packet buffer around an event to an MP4 without re-encoding, so a clip costs almost no CPU and keeps the camera's quality (ADR 0007). | yes (on a fixture clip) |
 | `review/` | A small local web page: list of flagged events, play the clip, confirm or dismiss with a reason. | partly |
 | `enrich.py` | Optional: OHGO incidents near the roundabout, shown next to our events. | yes (on saved JSON) |
 | `__main__.py` | `python -m roundabout_watch run` (live), `replay <video>` (a recorded file, on any machine), `calibrate` (helps fill `calibration.yaml`). | — |
 
 **`replay` is how the code gets developed.** Most of the work happens on
-the Mac or the Windows PC against a recorded clip, on the CPU, slowly. The
-Jetson is needed only for live speed.
+the Mac against a recorded clip. The desktop runs it live (ADR 0011).
 
 ## Thresholds (starting points, to be tuned)
 
@@ -79,20 +79,27 @@ Agreed in ADR 0006 (Peter's yes, 2026-10-17):
 - Clips of confirmed events: kept until Peter deletes them.
 
 A 4 MP H.264 stream at roughly 4–6 Mbit/s is about 45–65 GB a day (general
-knowledge estimate, to be measured on the real camera), so 72 hours fits on
-the 1 TB SSD with room for clips.
+knowledge estimate, to be measured on the real camera), so 72 hours needs
+roughly 135–195 GB on the desktop's drive.
 
 ## Where it runs
 
-- **The Jetson** (NVIDIA Jetson Orin Nano Super, `docs/parts.md`) next to
-  the camera, indoors: go2rtc, the recorder and `roundabout-watch`, each as a
-  systemd service so they restart on failure and after a power cut.
-- **JetPack 7.2.1** (Ubuntu 24.04, Python 3.12, CUDA 13.2, TensorRT 10.16),
-  which NVIDIA's quick-start guide installs today. The code stays
-  compatible with Python 3.10 so JetPack 6.2.x (Python 3.10, CUDA 12.6,
-  TensorRT 10.3) is a fallback (ADR 0003).
-- **On the Jetson, PyTorch and ONNX Runtime come from NVIDIA's Jetson AI Lab
-  index**, not PyPI, and TensorRT comes with JetPack.
+Decided in ADR 0011 (Peter's choice, 2026-10-17). Everything stays at home.
+
+- **Peter's Windows desktop (RTX 3080 Ti), near the window**, runs it all
+  day: go2rtc, the recorder and its sweeper, `roundabout-watch`, the
+  database and the pages. RF-DETR runs through PyTorch on the GPU.
+- **The camera is cabled straight to the desktop's Ethernet port** through
+  the PoE adapter, with no gateway set on either end; the desktop's own
+  internet is over Wi-Fi.
+- **The pages are served to the home network only**: the desktop itself,
+  or a phone on the home Wi-Fi. Nothing is uploaded and nothing is
+  forwarded through the router.
+- **The M4 MacBook Air is for building and testing**, with `replay` on
+  recorded video.
+- **Python 3.12 or newer**, from the first pull request that adds PyAV or
+  RF-DETR (PyAV 19 needs it). How the pipeline starts by itself on Windows
+  is decided at build step 6.
 
 ## Licences (CLAUDE.md 25)
 
@@ -102,8 +109,8 @@ the 1 TB SSD with room for clips.
 | `trackers` (ByteTrack, OC-SORT) | Apache-2.0 | Depends on `opencv-python`, which clashes with `opencv-python-headless`; install only one. |
 | supervision | MIT | Drawing and zones only; its ByteTrack was removed in 0.31.0 (2026-10-16). |
 | go2rtc | MIT | |
-| PyAV | BSD | Its aarch64 wheel bundles libx264 and libx265, which are GPL (general knowledge): check before shipping a device image to anyone. |
-| OpenCV | Apache-2.0 | The PyPI wheel has no GStreamer, so no Jetson hardware decoding through it. |
+| PyAV | BSD | Its wheels bundle libx264 and libx265, which are GPL (general knowledge): it matters only if the program is ever given to anyone. |
+| OpenCV | Apache-2.0 | `findHomography` for `ground.py`. |
 | Traffic Intelligence, 2D-TTC | MIT | References for `safety.py`, not dependencies. `safety.py` follows SSAM's definitions; 2D-TTC's rectangle model gets ported, with attribution, in step 1b. |
 | **Avoided:** Ultralytics YOLO | AGPL-3.0 | Trained models are AGPL too; using it as a service means open-sourcing everything or a paid licence. |
 | **Avoided:** BoxMOT | AGPL-3.0 | |
@@ -132,8 +139,8 @@ One pull request each, each with its tests, each after Peter's yes
 5. Test against ROCO's sample week (`docs/research/references.md`), once its
    licence is checked.
 6. Live: go2rtc, the recorder and sweeper (retention must exist before
-   continuous recording does), `ingest.py` live mode, `clips.py`, systemd
-   units. On the Jetson, with TensorRT.
+   continuous recording does), `ingest.py` live mode, `clips.py`, and the
+   pipeline starting by itself on the desktop.
 7. `review/`: the review page.
 8. `enrich.py`: OHGO incidents.
 
@@ -141,20 +148,13 @@ One pull request each, each with its tests, each after Peter's yes
 
 - RF-DETR model sizes, licences, accuracy and latency:
   https://github.com/roboflow/rf-detr ; export to ONNX and TensorRT:
-  https://rfdetr.roboflow.com (via search result); Orin NX timing:
-  https://roboflow.com/blog/rf-detr-nvidia-deepstream
+  https://rfdetr.roboflow.com (via search result)
 - Ultralytics licence: https://www.ultralytics.com/license ;
   https://github.com/ultralytics/ultralytics
 - `trackers`: https://pypi.org/project/trackers ; supervision 0.31.0
   release notes: https://github.com/roboflow/supervision/releases ; BoxMOT:
   https://github.com/mikel-brostrom/boxmot
-- Jetson multimedia (nvv4l2decoder, Orin Nano encoding):
-  https://docs.nvidia.com/jetson/archives/r36.4.3/DeveloperGuide/SD/Multimedia/AcceleratedGstreamer.html
-- Jetson Orin Nano quick start (installs JetPack 7.2.1):
-  https://docs.nvidia.com/jetson/orin-nano-devkit/user-guide/latest/quick_start.html ;
-  JetPack 6.2.3: https://developer.nvidia.com/embedded/jetpack-sdk-623 ;
-  JetPack 7.2.1: https://developer.nvidia.com/embedded/jetpack/downloads/archive-7.2.1 ;
-  Ubuntu 22.04 Python: https://packages.ubuntu.com/jammy/python3
+- Where it runs, PyAV's Python floor and the power estimate: ADR 0011.
 - DeepStream Python bindings: https://github.com/NVIDIA-AI-IOT/deepstream_python_apps
 - go2rtc: https://github.com/AlexxIT/go2rtc
 - SSAM TTC default and conflict angles:
