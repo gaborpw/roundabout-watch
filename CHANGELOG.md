@@ -6,6 +6,10 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **Automatic reviews run on Peter's Claude subscription, at no extra
+  cost** (Peter's choice, 2026-10-17; ADR 0010). OpenCodeReview picks the
+  files and rules and Claude Code reviews, instead of a paid API key
+  (ADR 0009). Nothing runs until Peter adds the Claude token.
 - **Pull requests get an automatic AI review** (Peter's ask, 2026-10-17;
   ADR 0009). Alibaba's OpenCodeReview runs on Anthropic, comments on each
   push, and does nothing until Peter adds the API key.

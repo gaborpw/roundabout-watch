@@ -30,14 +30,11 @@ Nothing watches a camera yet.
 
 Oldest first. Each stays here until it's done or Peter drops it.
 
-1. **Turn on the automatic review** (ADR 0009, Peter chose Anthropic,
-   2026-10-17). It needs an Anthropic API key, created at
-   console.anthropic.com, preferably in its own workspace with a monthly
-   spend limit. It goes in the repository's Actions secrets as
-   `OCR_LLM_AUTH_TOKEN`, with `OCR_LLM_URL`. `OCR_LLM_MODEL` and
-   `OCR_LLM_PROTOCOL` go in its variables. Until then the review job
-   passes without reviewing. The exact steps are in the chat of
-   2026-10-17. Never put the key in chat or the repo.
+1. **Turn on the automatic review** (ADR 0010, Peter's Claude
+   subscription, 2026-10-17). On the Mac, `claude setup-token` makes a
+   token. It goes in the repository's Actions secrets as
+   `CLAUDE_CODE_OAUTH_TOKEN`; nothing else is needed. Until then the review
+   job passes without reviewing. Never put the token in chat or the repo.
 2. **Order the parts** in `docs/parts.md`. The camera is a Reolink CX410
    behind the window (ADR 0005), about $798 in all. Re-check stock first;
    the Jetson at SparkFun is back-ordered.

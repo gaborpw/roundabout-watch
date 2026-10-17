@@ -75,6 +75,15 @@ Later the same day:
   window).
 - **Automatic reviews with OpenCodeReview, on Anthropic** (ADR 0009).
 
+Then, on the review:
+
+> wait i want the alibaba review thats free not the antropic one
+
+> ahhhh ok ok ill connect my claude code then
+
+- **The review runs on Peter's Claude subscription**, through
+  OpenCodeReview's delegation mode, not a paid API key (ADR 0010).
+
 ## Not decided yet
 
 Nothing about the setup. The camera is a Reolink CX410 behind the window

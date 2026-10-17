@@ -1,6 +1,8 @@
 # 9. Automatic review with OpenCodeReview, on Anthropic
 
-- **Status:** accepted (Peter's yes, 2026-10-17)
+- **Status:** superseded by ADR 0010 (2026-10-17): Peter chose the free route,
+  OpenCodeReview's delegation mode on his Claude subscription, over a paid
+  API key.
 - **Date:** 2026-10-17
 
 ## Context
