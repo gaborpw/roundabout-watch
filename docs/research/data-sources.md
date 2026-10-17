@@ -19,6 +19,57 @@ whether a crash we flagged was also reported.
 Not available to us: Waze for Cities (councils and transport agencies only),
 and Google Maps has no traffic or incident API.
 
+## The roundabout: West 45th Street and Bridge Avenue
+
+What the City of Cleveland has published about it. Read 2026-10-17 from the
+City's own PDFs unless marked.
+
+- **What it is:** one of the neighbourhood traffic circles of the Bridge
+  Avenue "quick-build" pilot (W 25th to W 65th), made of paint and flexible
+  posts. They replace traffic signals at most intersections on that stretch,
+  "excluding W. 44th Street". The City's documents don't name W 45th
+  individually; Peter confirmed it on the ground.
+- **When:** installation the week of August 24–28, 2026, signals removed at
+  the same time; speed tables and crosswalks in September 2026; a
+  "quantitative evaluation" in 2027, then possibly permanent concrete
+  circles. **If it is rebuilt in concrete, the calibration has to be redone.**
+- **Why:** the City says the signals were unwarranted for the traffic, and
+  that "angle crashes" were common. Its earlier Franklin Blvd
+  mini-roundabouts led to "a 76% reduction in crashes".
+- **Crash history, Bridge Ave corridor, 2021–2025:** 105 reported crashes:
+  - severity: 0 fatal, 3 serious injury, 5 injury, 13 possible injury, 84
+    property damage only;
+  - type: 38 angle, 26 parked vehicle, 19 sideswipe passing, 6 rear end, 16
+    other.
+
+  Parked cars matter here: a quarter of the crashes involved one.
+- **Traffic:** 24-hour counts at nearby cross streets, taken outside the
+  school year:
+
+  | Cross street | Vehicles in 24 h |
+  |---|---|
+  | W 58th | 2,070 |
+  | W 54th | 3,367 |
+  | W 52nd | 3,450 |
+  | W 30th | 1,990 |
+
+  So expect few vehicles an hour, and few near-misses a day.
+- **Speeds:** a June 2026 speed study found drivers reaching high speeds,
+  one at 80 mph (News5).
+
+Sources:
+
+- City of Cleveland, Bridge Ave Traffic Calming one-pager, July 2026:
+  https://www.clevelandohio.gov/sites/clevelandohio/files/transportation/Bridge/2026-07_One-Pager.pdf
+- City of Cleveland, construction timing flyer:
+  https://www.clevelandohio.gov/sites/clevelandohio/files/transportation/Bridge/2026-0819%20-%20Bridge%20Construction%20timing%20flyer.pdf
+- City of Cleveland, Bridge Ave Traffic Calming deck, June 2026 (crash
+  history, counts):
+  https://www.clevelandohio.gov/sites/clevelandohio/files/transportation/Bridge/Bridge%20Ave%20Traffic%20Calming.pdf
+- News5 Cleveland, five mini-roundabouts on Bridge Avenue between W 38th and
+  W 58th:
+  https://www.news5cleveland.com/news/local-news/we-follow-through/clevelands-ohio-city-gets-5-mini-roundabouts-on-bridge-avenue
+
 ## Recording law (Ohio)
 
 - Video of a public road from private property: generally lawful in the US

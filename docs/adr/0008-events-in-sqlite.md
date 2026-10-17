@@ -1,6 +1,6 @@
 # 8. Events in SQLite on the Jetson
 
-- **Status:** proposed (waiting on Peter's yes, `docs/next.md`)
+- **Status:** accepted (Peter's yes, 2026-10-17)
 - **Date:** 2026-10-17
 
 ## Context
