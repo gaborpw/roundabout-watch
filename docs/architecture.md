@@ -43,7 +43,7 @@ the rest arrive one pull request at a time, in the order under "Build order".
 |---|---|---|
 | `model.py` | The shared types: Detection (pixels), TrackPoint and Track (metres), Event and its status. **Exists.** | yes |
 | `config.py` | Reads `config.yaml` (thresholds, retention, camera name) and `.env` (secrets), validates both at load (CLAUDE.md 17). | yes |
-| `safety.py` | Pure maths: TTC and 2D-TTC, PET, DRAC, and the conflict angle (rear-end below 30°, crossing above 85°, as in FHWA's SSAM). No camera, no GPU, no files (CLAUDE.md 30). | yes |
+| `safety.py` | Pure maths: TTC, PET, DRAC, speed difference (SSAM's DeltaS) and the conflict angle (rear-end below 30°, crossing above 85°, as in FHWA's SSAM). No camera, no GPU, no files (CLAUDE.md 30). **Exists**, with road users as discs; SSAM's rectangles (2D-TTC) are the next step. | yes |
 | `ground.py` | Turns pixels into metres. Fits a homography from at least four surveyed points in `calibration.yaml` (OpenCV `findHomography`), reports the reprojection error, and **refuses to run uncalibrated**. Projects each detection's ground-contact point (bottom-middle of its box). | yes |
 | `flag.py` | Decides what is worth a look. Near-miss: a pair whose TTC or PET falls under the configured threshold. Possible crash: two tracks overlapping on the ground, then both stopping for more than N seconds (a heuristic; ADR 0002 says a person decides). | yes |
 | `store.py` | SQLite through the standard library's `sqlite3`, parameterised queries only (CLAUDE.md 18). Events, their measures, review status and the reviewer's reason. | yes |
@@ -104,7 +104,7 @@ the 1 TB SSD with room for clips.
 | go2rtc | MIT | |
 | PyAV | BSD | Its aarch64 wheel bundles libx264 and libx265, which are GPL (general knowledge): check before shipping a device image to anyone. |
 | OpenCV | Apache-2.0 | The PyPI wheel has no GStreamer, so no Jetson hardware decoding through it. |
-| Traffic Intelligence, 2D-TTC | MIT | Ported into `safety.py` with attribution, not depended on. |
+| Traffic Intelligence, 2D-TTC | MIT | References for `safety.py`, not dependencies. `safety.py` follows SSAM's definitions; 2D-TTC's rectangle model gets ported, with attribution, in step 1b. |
 | **Avoided:** Ultralytics YOLO | AGPL-3.0 | Trained models are AGPL too; using it as a service means open-sourcing everything or a paid licence. |
 | **Avoided:** BoxMOT | AGPL-3.0 | |
 | **Avoided for now:** NVIDIA DeepStream | NVIDIA EULA | Python bindings deprecated from 9.0 (no more wheel files). |
@@ -119,8 +119,10 @@ offered as a service, a patent attorney reviews it (CLAUDE.md 46).
 One pull request each, each with its tests, each after Peter's yes
 (CLAUDE.md 1, 2). The order puts the pure, checkable parts first.
 
-1. `safety.py`: TTC, 2D-TTC, PET, DRAC and conflict angle, tested against
-   hand-worked scenarios and checked against the 2D-TTC repo's results.
+1. `safety.py`: TTC, PET, DRAC, speed difference and conflict angle, with
+   road users as discs, tested against hand-worked scenarios. **Done.**
+   1b. Rectangles instead of discs (2D-TTC), checked against the 2D-TTC
+   repo's results.
 2. `config.py` and `ground.py`: calibration file, homography, reprojection
    error, the `calibrate` helper.
 3. `track.py` + `flag.py` + `store.py`: from detections to flagged events in

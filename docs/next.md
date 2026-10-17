@@ -39,6 +39,6 @@ Oldest first. Each stays here until it's done or Peter drops it.
 
 ## Next
 
-1. Build step 1 in `docs/architecture.md`: `safety.py` (TTC, 2D-TTC, PET,
-   DRAC, conflict angle), as its own pull request with hand-worked tests. It
-   needs no hardware, so it can start before the parts arrive.
+1. Build step 1b: rectangles instead of discs in `safety.py` (2D-TTC).
+   Then step 2, `config.py` and `ground.py` (calibration). Neither needs
+   hardware.

@@ -6,6 +6,11 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **The near-miss maths exists** (Peter's go-ahead, 2026-10-17; build step
+  1). `safety.py` measures time to collision, post-encroachment time, the
+  braking needed to avoid a crash, the speed difference and the conflict
+  type, following FHWA's SSAM definitions, with road users as discs. 33 new
+  tests use hand-worked scenarios. Nothing calls it yet.
 - **Automatic reviews run on Peter's Claude subscription, at no extra
   cost** (Peter's choice, 2026-10-17; ADR 0010). OpenCodeReview picks the
   files and rules and Claude Code reviews, instead of a paid API key
