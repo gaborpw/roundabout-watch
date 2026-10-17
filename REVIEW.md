@@ -51,6 +51,19 @@ period, a file name, a module boundary, a part in `docs/parts.md`. An untrue
 rule left behind is a Must fix. A new kind of work with no rule covering it
 is worth a Minor suggesting one.
 
+## The automatic review (OpenCodeReview)
+
+Every pull request also gets OpenCodeReview's comments (ADR 0009). Its
+findings are claims to verify, not orders:
+
+- Trace a real path from a caller or an input to the failure. If the path is
+  real and the fix is in proportion, fix it.
+- Otherwise answer its thread with the path you traced and why the fix isn't
+  worth its code, and tell Peter.
+- A security finding's thread stays open until Peter decides.
+- Its rules live in `.opencodereview/rule.json`. When this file's labels or
+  the Must-fix list change, update that file in the same pull request.
+
 ## The summary
 
 Open with a one-line tally, such as "1 Must fix, 2 Minor, 0 Old problem", or

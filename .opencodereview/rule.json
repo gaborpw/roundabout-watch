@@ -1,0 +1,9 @@
+{
+  "rules": [
+    {
+      "path": "**/*",
+      "merge_system_rule": true,
+      "rule": "This is Roundabout Watch: one camera behind a window watching a mini-roundabout in Cleveland, flagging near-misses and possible crashes for a person to review. REVIEW.md and CLAUDE.md in the repository root are the standard; if you can read them, they win over this summary.\n\n## Labels\nStart every finding with one of: **Must fix** (breaks behaviour, leaks a secret, loses data, or breaks a written rule), **Minor** (worth doing, not blocking; at most five per review), **Old problem** (a real bug this pull request didn't introduce).\n\n## Must fix in this project\n- A secret in code, config, a log line or an error message. An RTSP URL is a secret: it carries the camera password. Library errors that quote a URL must be stripped before logging.\n- A flagged event shown, counted or alerted as a confirmed crash or near-miss. The software only flags; a person confirms (ADR 0002).\n- Safety measures (TTC, PET, DRAC) computed in pixels instead of metres, or computed without a calibration.\n- Anything that identifies people: face recognition, number-plate reading, re-identifying a person or vehicle across days. Any audio.\n- Footage kept longer than ADR 0006 says, or a recorder without its sweeper.\n- SQL built from strings instead of placeholders.\n- New logic without a test; a code change without a CHANGELOG.md line; a fix: commit without a docs/lessons.md entry; a change that makes CLAUDE.md, docs/ or an ADR untrue without updating it.\n\n## Before posting\nName the file and line and the input that makes it fail. For the safety maths, give the scenario and the number it should have produced. If you can't trace a real path to harm, it is Minor at most, or nothing. Don't report what CI checks (formatting, lint, type errors, failing tests) or style the file already uses consistently."
+    }
+  ]
+}

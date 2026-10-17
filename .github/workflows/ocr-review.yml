@@ -1,0 +1,92 @@
+name: OpenCodeReview
+
+# An automatic AI review on every pull request, from Alibaba's OpenCodeReview
+# (Peter's ask, 2026-10-17; ADR 0009). It posts inline comments and one summary
+# comment that it updates in place. Its findings are claims to verify, weighed
+# by REVIEW.md, never orders.
+#
+# Peter chose Anthropic (2026-10-17). Which AI it uses is set entirely in the
+# repository's settings, so switching model or provider needs no code change
+# (docs/next.md has the steps):
+#   secrets   OCR_LLM_URL          the provider's API address
+#             OCR_LLM_AUTH_TOKEN   its API key
+#   variables OCR_LLM_MODEL        the model name
+#             OCR_LLM_PROTOCOL     anthropic, openai or openai-responses
+#             OCR_LLM_EXTRA_BODY   optional JSON added to each request
+# Until the key is set, the job says so in its log and passes.
+#
+# Minutes: one job per push to a pull request, a few minutes each (not yet
+# measured), billed to the account's Actions allowance like CI.
+
+on:
+  # pull_request, not the pull_request_target OpenCodeReview's own example
+  # uses: that trigger exists for pull requests from forks, which a private
+  # repository with one author doesn't have, and it is the riskier one.
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ocr-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+# Every run step is bash with pipefail (docs/lessons.md; enforced by
+# .github/scripts/pipefail.sh).
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  review:
+    name: OpenCodeReview
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Is the review key set?
+        id: key
+        env:
+          KEY: ${{ secrets.OCR_LLM_AUTH_TOKEN }}
+        run: |
+          if [ -n "$KEY" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::OCR_LLM_AUTH_TOKEN isn't set, so no review ran (docs/next.md has the steps)."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Pinned to the v1.13.1 commit, not a tag or @main: this action gets an
+      # API key and can write on pull requests, so an upstream change must not
+      # reach it silently (CLAUDE.md 24). ocr_version pins the CLI it installs
+      # for the same reason; its default is "latest".
+      - name: Review
+        if: steps.key.outputs.present == 'true'
+        uses: alibaba/open-code-review@8eb83340a487b1150af00701b94f01af97e4b4d6 # v1.13.1
+        with:
+          ocr_version: "1.13.1"
+          llm_url: ${{ secrets.OCR_LLM_URL }}
+          llm_auth_token: ${{ secrets.OCR_LLM_AUTH_TOKEN }}
+          llm_model: ${{ vars.OCR_LLM_MODEL }}
+          llm_protocol: ${{ vars.OCR_LLM_PROTOCOL }}
+          # Required by the action. An empty value would mean Anthropic, so
+          # it's derived from the protocol, which wins anyway when it's set.
+          llm_use_anthropic: ${{ vars.OCR_LLM_PROTOCOL == 'anthropic' && 'true' || 'false' }}
+          # The action's default turns the model's thinking off, which current
+          # Claude models reject with an error (Claude API docs, read
+          # 2026-10-17). An empty object sends nothing extra, so the model
+          # thinks the way it does by default.
+          llm_extra_body: ${{ vars.OCR_LLM_EXTRA_BODY || '{}' }}
+          language: English
+          # A ceiling on tokens per run, so one large pull request can't run
+          # up the bill. A starting value, not a measured one: raise it if
+          # reviews come back "failed(budget)" on ordinary pull requests.
+          max_tokens_budget: "400000"
+          # One summary comment, updated in place; later pushes review only the
+          # new commits and don't repeat a comment on the same lines, like
+          # REVIEW.md's "re-reviews look only at what changed".
+          sticky_summary: "true"
+          checkpoint_range: "true"
+          incremental: "true"

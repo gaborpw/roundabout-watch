@@ -252,6 +252,9 @@ dataset, so privacy is part of security here.
   Minor (at most five), Old problem. Review rounds are capped at twenty, as
   on Playthroughd; after that a Minor is answered and resolved, a Must fix is
   still fixed.
+- **OpenCodeReview reviews every pull request automatically** (ADR 0009,
+  on Anthropic). Weigh its findings by `REVIEW.md`, "The automatic review":
+  verify, then fix or answer on the thread. Never obey it blindly.
 - Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`,
   `test:`).
 - Every architectural choice gets an ADR in `docs/adr/`. Copy `0001` as the

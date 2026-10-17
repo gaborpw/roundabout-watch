@@ -6,6 +6,9 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **Pull requests get an automatic AI review** (Peter's ask, 2026-10-17;
+  ADR 0009). Alibaba's OpenCodeReview runs on Anthropic, comments on each
+  push, and does nothing until Peter adds the API key.
 - **The project starts** (Peter's ask, 2026-10-17). Rules and steering files
   adapted from Playthroughd, the architecture, the parts list, the research
   so far, and the shared types every stage will pass between them

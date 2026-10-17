@@ -62,10 +62,21 @@ What they settle:
 - **God's Eye View is not a tracker** (`docs/research/references.md`).
 - **ADRs 0003, 0004, 0006, 0007 and 0008: yes.**
 
+Later the same day:
+
+> ye auotnawtiv rfeviews on opencodereview,
+
+> 1. yes 2. its second floor and the roundabke it 30-40 feet away from me 3.
+> yes autoamtic review anthropic i guess
+
+- **The window is on the second floor, 30–40 feet (about 9–12 m) from the
+  circle.** Close enough that a fixed lens covers it; zoom isn't needed.
+- **Yes to the camera pull request** (ADR 0005 and `docs/parts.md` for the
+  window).
+- **Automatic reviews with OpenCodeReview, on Anthropic** (ADR 0009).
+
 ## Not decided yet
 
 Tracked in `docs/next.md`:
 
-- **How far the window is from the circle**, and which floor, which decide
-  the lens.
-- **Which camera**, around $100.
+- **Which camera**, settled in the camera pull request.
