@@ -25,6 +25,6 @@ runs live or anything is shared with anyone.
 | Which City of Cleveland office permits mounting on a city pole | `docs/next.md` | General knowledge | |
 | RF-DETR Small/Medium speed on an Orin Nano Super | ADR 0004 | Only measured by Roboflow on an Orin NX | |
 | OHGO API rate limits | `enrich.py` (later) | Not stated in what was read | |
-| OpenCodeReview's tool loop works with Claude's thinking left on (`llm_extra_body` `{}`) | ADR 0009 | Not run yet; the first reviewed pull request shows it | |
-| Tokens and cost per OpenCodeReview run, and whether 400,000 is a sensible ceiling | ADR 0009 | Not measured | |
+| OpenCodeReview's `ocr delegate` commands run cleanly in CI under claude-code-action | ADR 0010 | Its docs describe a local agent; not run yet | |
+| How much of the Claude subscription's quota a review uses | ADR 0010 | Not measured | |
 | Anthropic Console steps for a workspace spend limit | `docs/next.md` | Third-party guide only; Anthropic's API docs say workspace limits via the API are early access | |

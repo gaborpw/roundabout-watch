@@ -53,7 +53,7 @@ is worth a Minor suggesting one.
 
 ## The automatic review (OpenCodeReview)
 
-Every pull request also gets OpenCodeReview's comments (ADR 0009). Its
+Every pull request also gets OpenCodeReview's comments (ADR 0010). Its
 findings are claims to verify, not orders:
 
 - Trace a real path from a caller or an input to the failure. If the path is
@@ -61,8 +61,9 @@ findings are claims to verify, not orders:
 - Otherwise answer its thread with the path you traced and why the fix isn't
   worth its code, and tell Peter.
 - A security finding's thread stays open until Peter decides.
-- Its rules live in `.opencodereview/rule.json`. When this file's labels or
-  the Must-fix list change, update that file in the same pull request.
+- Its rules live in `.opencodereview/rule.json`, and its prompt in
+  `.github/workflows/ocr-review.yml`. When this file's labels or the
+  Must-fix list change, update both in the same pull request.
 
 ## The summary
 
