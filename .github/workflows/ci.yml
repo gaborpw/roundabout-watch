@@ -1,0 +1,74 @@
+name: CI
+
+# Runs make check (format, lint, mypy --strict, tests) and the lessons
+# check. Nothing here needs a camera, a GPU or a secret (CLAUDE.md 37).
+#
+# Minutes: GitHub bills private repositories' Actions time against the
+# account's monthly allowance, which ran out on Playthroughd on 2026-10-14
+# (its docs/lessons.md). This workflow runs on pull requests and on main
+# after a merge only, not on every branch push, and takes about a minute.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Every run step is bash with pipefail: GitHub's default shell is plain
+# `bash -e`, which hides a failure before a pipe (docs/lessons.md; enforced
+# by .github/scripts/pipefail.sh).
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lessons:
+    name: Lessons — every fix records what it taught
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Every fix commit adds to docs/lessons.md
+        env:
+          EVENT: ${{ github.event_name }}
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          if [ "$EVENT" = pull_request ]; then
+            .github/scripts/lessons.sh "$BASE..$HEAD"
+          elif [ "$EVENT" = push ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            .github/scripts/lessons.sh "$BEFORE..$AFTER"
+          else
+            .github/scripts/lessons.sh "$AFTER^!"
+          fi
+
+  check:
+    name: make check (Python ${{ matrix.python }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # 3.12 is what the Jetson runs on JetPack 7.2.1; 3.10 is the JetPack 6.2
+    # fallback (ADR 0003). Each job takes about a minute.
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v7
+      # setup-uv publishes full versions only (no v10 tag): checked by
+      # .github/scripts/action_refs.sh in make check.
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked
+      - run: make check

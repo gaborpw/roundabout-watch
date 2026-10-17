@@ -1,0 +1,34 @@
+# Secrets: the camera password and the RTSP address live here (CLAUDE.md 15).
+.env
+.env.*
+!.env.example
+
+# Footage never enters the repo: it shows real people on a public road
+# (CLAUDE.md 19–21). Test fixtures live in tests/fixtures/ instead.
+recordings/
+clips/
+*.mp4
+*.mkv
+!tests/fixtures/*.mp4
+
+# Model weights are downloaded or built on the machine that runs them.
+*.pt
+*.pth
+*.onnx
+*.engine
+models/
+
+# The event database lives next to the footage, not in git.
+*.db
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.egg-info/
