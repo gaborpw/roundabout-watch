@@ -74,9 +74,9 @@ on 2026-10-17:
   estimate:
   - an average draw of 100–200 W, which isn't measured;
   - at Ohio's average home price of 19.45¢/kWh in July 2026 (EIA).
-- **Storage:** 72 hours of recording (ADR 0006) is roughly 135–195 GB, at the
-  estimated 45–65 GB a day. It goes on the desktop's own drive if there is
-  room; if not, a drive joins the parts list then.
+- **Storage:** the desktop has two 12 TB hard drives (Peter, 2026-10-17).
+  A day of recording (ADR 0006) is roughly 45–65 GB, by estimate, so there's
+  plenty of room.
 - **Results can only be seen at home.** Seeing them from elsewhere would be
   a new decision, with its own ADR.
 - **Trade-off:** the desktop is busy all day. A game shares the GPU with the

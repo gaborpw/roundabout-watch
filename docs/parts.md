@@ -87,8 +87,8 @@ Before tax, shipping and hardware-store items. Earlier versions of this list:
 
 ## Probably already owned (check before buying)
 
-- **The desktop with the RTX 3080 Ti**, near the window (ADR 0011). It needs
-  roughly 135–195 GB free for 72 hours of recording (ADR 0006's estimate).
+- **The desktop with the RTX 3080 Ti**, near the window (ADR 0011), with two
+  12 TB hard drives: far more than a day of recording needs (ADR 0006).
 - **Two network cables** (Peter, 2026-10-17: "i have oing ethernet cords"):
   camera to PoE adapter, and adapter to desktop. Cat5e or Cat6 both carry
   the camera's power (general knowledge).
