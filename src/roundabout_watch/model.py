@@ -5,18 +5,21 @@ tested alone and swapped without touching the others: a new detector produces
 the same Detection, and the safety maths never learns which detector ran.
 
 Two coordinate systems meet here and must never be mixed (CLAUDE.md, "the
-second idea"): Detection.box is in image pixels; everything from TrackPoint
-on is in metres on the ground, after calibration.
+second idea"): Frame, Detection and TrackedDetection are in image pixels;
+everything from TrackPoint on is in metres on the ground, after calibration.
 """
 
 from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
+
+import numpy as np
+from numpy.typing import NDArray
 
 
-class RoadUser(str, Enum):
+class RoadUser(StrEnum):
     """What a tracked object is. Narrower than COCO's classes on purpose:
     the safety maths only cares about things that move on the road."""
 
@@ -26,6 +29,41 @@ class RoadUser(str, Enum):
     MOTORCYCLE = "motorcycle"
     BICYCLE = "bicycle"
     PEDESTRIAN = "pedestrian"
+
+
+# eq=False: comparing two frames would compare their images pixel by pixel,
+# which numpy answers with an array, not a yes or no.
+@dataclass(frozen=True, eq=False)
+class Frame:
+    """One decoded picture, from the camera or a video file.
+
+    The image is RGB, height × width × 3 bytes: the order RF-DETR expects.
+    time_s comes from the video's own timestamps, so a phone video with an
+    uneven frame rate still gets the right times.
+    """
+
+    index: int
+    time_s: float
+    image: NDArray[np.uint8]
+
+    def __post_init__(self) -> None:
+        if self.index < 0:
+            raise ValueError("frame index must not be negative")
+        if not math.isfinite(self.time_s):
+            raise ValueError("time_s must be a finite number")
+        shape = self.image.shape
+        if self.image.dtype != np.uint8 or len(shape) != 3 or shape[2] != 3:
+            raise ValueError("a frame's image is RGB: height × width × 3 bytes")
+        if shape[0] == 0 or shape[1] == 0:
+            raise ValueError("a frame's image must not be empty")
+
+    @property
+    def width(self) -> int:
+        return int(self.image.shape[1])
+
+    @property
+    def height(self) -> int:
+        return int(self.image.shape[0])
 
 
 @dataclass(frozen=True)
@@ -60,6 +98,20 @@ class Detection:
 
 
 @dataclass(frozen=True)
+class TrackedDetection:
+    """A detection the tracker has linked to others: the same track_id in two
+    frames is the same road user. Still in pixels; ground.py (build step 2)
+    turns a track's ground-contact points into a Track in metres."""
+
+    track_id: int
+    detection: Detection
+
+    def __post_init__(self) -> None:
+        if self.track_id < 0:
+            raise ValueError("track_id must not be negative")
+
+
+@dataclass(frozen=True)
 class TrackPoint:
     """Where one tracked object was at one moment, in metres on the ground."""
 
@@ -91,12 +143,12 @@ class Track:
             raise ValueError("track points must be in strictly increasing time order")
 
 
-class EventKind(str, Enum):
+class EventKind(StrEnum):
     NEAR_MISS = "near_miss"
     POSSIBLE_CRASH = "possible_crash"
 
 
-class ConflictType(str, Enum):
+class ConflictType(StrEnum):
     """How two road users would have met, by the angle between their headings.
 
     FHWA's SSAM (report FHWA-HRT-08-051): rear-end below 30°, crossing above
@@ -107,7 +159,7 @@ class ConflictType(str, Enum):
     CROSSING = "crossing"
 
 
-class EventStatus(str, Enum):
+class EventStatus(StrEnum):
     """ADR 0002: the software only ever flags; a person confirms or dismisses."""
 
     FLAGGED = "flagged"

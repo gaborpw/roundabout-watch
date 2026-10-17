@@ -1,6 +1,8 @@
 # 6. Positions, not people: privacy and retention
 
-- **Status:** accepted (Peter's yes, 2026-10-17)
+- **Status:** accepted (Peter's yes, 2026-10-17). Retention changed the
+  same day, at Peter's ask: a day of recording instead of 72 hours, and
+  the paths kept.
 - **Date:** 2026-10-17
 
 ## Context
@@ -21,10 +23,21 @@ identities.
   no matching the same person or vehicle across days (CLAUDE.md 19).
 - **No audio** (CLAUDE.md 20). The camera's microphone is off in its
   settings, and the code never reads an audio track.
-- **Retention:**
-  - continuous recording is kept 72 hours, then deleted automatically;
-  - clips of flagged and dismissed events are kept 30 days;
-  - clips of confirmed events are kept until Peter deletes them.
+- **Retention** (Peter, 2026-10-17: "it should collect it for a day,
+  process it as its going and then if its process and it has that data it
+  can delete it, i really dont wanna keep video for that long"):
+  - **Continuous recording: one day.** A file is deleted once it is 24
+    hours old **and** the pipeline has processed it. A file the pipeline
+    missed (it was down) waits to be processed, but is deleted at 72 hours
+    whatever happens, so an outage can't keep video for long.
+  - Clips of flagged and dismissed events: 30 days, so there's time to
+    review them.
+  - Clips of confirmed events: until Peter deletes them.
+  - **Paths:** each road user's path on the ground (positions and times,
+    no picture) is kept in full for 90 days. A one-line summary of each
+    (what it was, when, which way it came and went, its speed) is kept
+    until Peter deletes it. Neither is linked to a person, or to the same
+    road user on another day (CLAUDE.md 19).
 
   The sweeper that deletes old footage ships in the same pull request as
   the recorder, never after it.
@@ -37,14 +50,16 @@ identities.
 
 ## Consequences
 
-- 72 hours means a crash Peter hears about on a Friday can still be found
-  on Monday, and crashes the software missed can be counted, which is how
-  its miss rate is measured.
-- **Trade-off:** no long archive. Anything older than 72 hours that wasn't
-  flagged is gone, and a pattern that needs months of raw video can't be
-  studied.
-- Peter agreed to these retention numbers on 2026-10-17. Changing them is
-  Peter's call and updates this ADR.
+- **Trade-off:** a crash Peter hears about has to be looked for within a
+  day, and so does the check for crashes the software missed, which is how
+  its miss rate is measured. Anything older than a day that wasn't flagged
+  is gone. In exchange, very little video is ever kept.
+- The paths cover most of what the charts need (ADR 0012) without keeping
+  any picture. A pattern that needs months of raw video can't be studied.
+- The 72-hour limit for unprocessed files was Claude's addition, not
+  Peter's words: it stops an outage from quietly keeping days of video.
+- Peter set these numbers on 2026-10-17. Changing them is Peter's call and
+  updates this ADR.
 
 ## Sources (read 2026-10-17)
 

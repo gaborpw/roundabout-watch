@@ -2,6 +2,7 @@
 
 import math
 
+import numpy as np
 import pytest
 
 from roundabout_watch.model import (
@@ -9,8 +10,10 @@ from roundabout_watch.model import (
     Event,
     EventKind,
     EventStatus,
+    Frame,
     RoadUser,
     Track,
+    TrackedDetection,
     TrackPoint,
 )
 
@@ -95,3 +98,41 @@ def test_event_rejects_nan_measure() -> None:
             end_s=1.0,
             measures={"ttc_s": math.nan},
         )
+
+
+# --- frames and tracked detections ------------------------------------------
+
+
+def _image(height: int = 4, width: int = 6) -> np.ndarray:
+    return np.zeros((height, width, 3), dtype=np.uint8)
+
+
+def test_frame_knows_its_size() -> None:
+    frame = Frame(index=0, time_s=0.0, image=_image(4, 6))
+    assert (frame.width, frame.height) == (6, 4)
+
+
+@pytest.mark.parametrize(
+    "image",
+    [
+        np.zeros((4, 6), dtype=np.uint8),  # grey, no channels
+        np.zeros((4, 6, 4), dtype=np.uint8),  # RGBA
+        np.zeros((4, 6, 3), dtype=np.float32),  # not bytes
+        np.zeros((0, 6, 3), dtype=np.uint8),  # empty
+    ],
+)
+def test_frame_rejects_anything_but_rgb_bytes(image: np.ndarray) -> None:
+    with pytest.raises(ValueError):
+        Frame(index=0, time_s=0.0, image=image)
+
+
+@pytest.mark.parametrize(("index", "time_s"), [(-1, 0.0), (0, math.nan), (0, math.inf)])
+def test_frame_rejects_bad_index_or_time(index: int, time_s: float) -> None:
+    with pytest.raises(ValueError):
+        Frame(index=index, time_s=time_s, image=_image())
+
+
+def test_tracked_detection_rejects_a_negative_track() -> None:
+    # ByteTrack uses -1 for "not a track yet"; those never become one.
+    with pytest.raises(ValueError):
+        TrackedDetection(track_id=-1, detection=_detection())

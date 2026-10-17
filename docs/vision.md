@@ -104,14 +104,25 @@ Then, on what runs it:
   home network only.
 - **Record it and chart it, a lot.** Every crash and near-miss is recorded and
   shown in charts, not only listed. Which charts, and what is kept to draw
-  them, is still to be agreed (`docs/next.md`).
+  them, Peter settled next (below; ADR 0006 and 0012).
 - **It's for fun.** That doesn't loosen the rules: a flagged event is still
   a candidate until Peter confirms it (ADR 0002).
 
+Then, on what's kept and the charts:
+
+> yeah i think for the data it should collect it for a day, process it as
+> its going and then if its process and it has that data it can delete it,
+> i really dont wanna keep video for that long but my desktop does have 2
+> 12tb hdd 2. yes 3. yes.
+
+- **A day of video, then gone once processed** (ADR 0006). Clips of flagged
+  events are still kept long enough to review.
+- **The paths are kept**, with no picture: in full for 90 days, a summary
+  of each road user until deleted (ADR 0006).
+- **Yes to the first look** on a video file, before calibration.
+- **Yes to Streamlit and the six pages** (ADR 0012).
+
 ## Not decided yet
 
-- Which charts, and whether every road user's path (positions only) is kept
-  to draw them, and for how long (`docs/next.md`).
-
-The camera is a Reolink CX410 behind the window (ADR 0005); open steps are
-in `docs/next.md`.
+Nothing about the setup. The camera is a Reolink CX410 behind the window
+(ADR 0005); open steps are in `docs/next.md`.
