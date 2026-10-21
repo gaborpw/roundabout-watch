@@ -39,7 +39,11 @@ on 2026-10-17:
   - the review and chart pages.
 
   RF-DETR runs on the GPU through PyTorch with CUDA. TensorRT is an option
-  only if that turns out too slow (not measured).
+  only if that turns out too slow (not measured). PyPI's PyTorch for
+  Windows has no CUDA, so on Windows only, torch and torchvision come
+  from PyTorch's own CUDA 13.0 index, `download.pytorch.org/whl/cu130`
+  (added 2026-10-21; `pyproject.toml`). Every other package stays on
+  PyPI, and the Mac's packages are unchanged.
 - **The M4 MacBook Air is for building and testing.** `replay` runs the
   whole pipeline on a recorded video, with RF-DETR on Apple's GPU. It never
   runs the camera all day.
@@ -92,6 +96,10 @@ on 2026-10-17:
 ## Sources (read 2026-10-17)
 
 - PyAV 19.0.1 requires Python 3.12: https://pypi.org/project/av/
+- PyTorch's index setup for uv, read 2026-10-21:
+  https://docs.astral.sh/uv/guides/integration/pytorch/ ; the CUDA 13.0
+  Windows build of torch 2.14.1 for Python 3.12:
+  https://download.pytorch.org/whl/cu130/torch/
 - RF-DETR uses CUDA or Apple's MPS when PyTorch finds one, else the CPU:
   `rfdetr/config.py` in the rfdetr 1.11.2 package from
   https://pypi.org/project/rfdetr/
