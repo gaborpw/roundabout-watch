@@ -6,6 +6,11 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **Phone videos filmed upright are turned the right way up** (found on
+  Peter's first video, 2026-10-21). They were read sideways, and the
+  detector missed most of what was in them; upright, it found the 2 cars
+  Peter saw.
+
 - **A first look on a video** (Peter's yes, 2026-10-17; build step 1a).
   `python -m roundabout_watch replay VIDEO` finds cars, bikes and people
   with RF-DETR, follows each with ByteTrack and writes a copy with boxes,
