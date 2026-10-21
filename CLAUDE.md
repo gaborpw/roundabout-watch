@@ -19,9 +19,10 @@ numbers are this repo's own.
 ## What this is
 
 **Roundabout Watch**: one camera overlooking a roundabout in Cleveland, Ohio,
-and a small computer next to it that tracks every vehicle, cyclist and
-pedestrian, measures how close they come to each other, and saves a short
-clip of every near-miss and possible crash for a person to review.
+and Peter's own desktop beside the window (ADR 0011) that tracks every
+vehicle, cyclist and pedestrian, measures how close they come to each other,
+and saves a short clip of every near-miss and possible crash for a person to
+review. Everything stays at home.
 
 ## The one idea that must not get lost
 
