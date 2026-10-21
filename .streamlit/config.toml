@@ -1,0 +1,21 @@
+# Streamlit's settings for the app (ADR 0012). Streamlit reads this from
+# the folder `streamlit run` starts in, so start it in the repository's root.
+
+[browser]
+# Streamlit sends usage statistics to its makers by default (its config.py,
+# browser.gatherUsageStats). Everything here stays on this computer.
+gatherUsageStats = false
+
+[server]
+# This computer only. Reaching it from a phone on the home Wi-Fi (ADR 0012)
+# is for the desktop; a laptop on someone else's Wi-Fi must not be reachable.
+address = "localhost"
+# Megabytes. Streamlit's default is 200, about three minutes of 1080p phone
+# video, and it holds an upload in memory. Longer videos: "A file on this
+# computer", which has no limit.
+maxUploadSize = 1000
+
+[client]
+# Hides Streamlit's Deploy button, which publishes an app to Streamlit's
+# cloud: nothing here goes online (ADR 0011).
+toolbarMode = "minimal"

@@ -112,6 +112,33 @@ class TrackedDetection:
 
 
 @dataclass(frozen=True)
+class TrackSpan:
+    """When one tracked road user was in view, and what it was: the summary
+    replay keeps of each track. Times are seconds from the start of the
+    video. No metres yet, so no speed or direction until ground.py exists."""
+
+    track_id: int
+    kind: RoadUser
+    first_s: float
+    last_s: float
+    frames: int
+
+    def __post_init__(self) -> None:
+        if self.track_id < 0:
+            raise ValueError("track_id must not be negative")
+        if not (math.isfinite(self.first_s) and math.isfinite(self.last_s)):
+            raise ValueError("a span's times must be finite numbers")
+        if self.last_s < self.first_s:
+            raise ValueError("a span cannot end before it starts")
+        if self.frames < 1:
+            raise ValueError("a span is seen in at least one frame")
+
+    @property
+    def seconds(self) -> float:
+        return self.last_s - self.first_s
+
+
+@dataclass(frozen=True)
 class TrackPoint:
     """Where one tracked object was at one moment, in metres on the ground."""
 

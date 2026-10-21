@@ -38,12 +38,24 @@ The options, read on 2026-10-17:
   5. **Who:** car with car, car with bike, car with pedestrian, and so on.
   6. **Traffic:** road users per hour, speeds through the circle, the usual
      paths, and weekly trends, all from the kept paths (ADR 0006).
+  7. **Try a video** (added 2026-10-21, Peter: "how will i be able to upload
+     higher and longer videos? can i make some UI for it here, and can i
+     make it have statistics"): drop in a video or name one on the
+     computer, and get it back drawn on, with counts by kind, arrivals over
+     time, time in view and a timeline. A tried video is processed in a
+     temporary folder and deleted; nothing from it is stored (ADR 0006).
+     It's the first page built, because it needs no camera.
 - **Every count of events says whether it is flagged or confirmed**
   (ADR 0002).
 - **Usage statistics off.** Streamlit sends them by default; the repo's
   `.streamlit/config.toml` sets `browser.gatherUsageStats = false`.
 - **Home network only.** It's served on the desktop's home-network address
-  and never forwarded through the router (ADR 0011).
+  and never forwarded through the router (ADR 0011). Until it runs on the
+  desktop, `.streamlit/config.toml` keeps it to the computer it runs on
+  (`server.address = "localhost"`), so a laptop on someone else's Wi-Fi
+  isn't reachable.
+- **No Deploy button.** Streamlit's toolbar offers to publish an app to its
+  cloud; `client.toolbarMode = "minimal"` hides it.
 - The pages read the database and the clips. They never change the safety
   maths or the thresholds (`config.yaml`).
 

@@ -38,6 +38,9 @@ class VideoInfo:
     # The stream's average rate. A phone's rate can wander; each Frame's own
     # time_s is what the tracker uses, so this only sizes things like trails.
     fps: float
+    # How many frames the file says it holds, for a progress bar; None when
+    # the file doesn't say.
+    frames: int | None = None
 
 
 def quarter_turns(degrees: float) -> int:
@@ -76,7 +79,12 @@ class VideoFile:
             width, height = self._stream.width, self._stream.height
             if self._quarters % 2:
                 width, height = height, width
-            self.info = VideoInfo(width=width, height=height, fps=float(rate))
+            self.info = VideoInfo(
+                width=width,
+                height=height,
+                fps=float(rate),
+                frames=self._stream.frames or None,
+            )
         except BaseException:
             self._container.close()
             raise

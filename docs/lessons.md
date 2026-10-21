@@ -19,6 +19,16 @@ Newest first. Format: date, what happened, cause, guard.
 
 ## 2026-10-21
 
+- **A failed video run on the app page kept the last video's result on
+  screen** (caught by the automatic review on PR #14, before it merged). A
+  full disk or an unreadable file raised `OSError`, which the page didn't
+  catch, and no failure cleared the old result, so it read as this run's.
+  Cause: the error handling listed the failures the happy-path tests
+  produced, not the ones a computer does. Guard:
+  `test_a_failed_run_clears_the_last_result` runs a video, then a run that
+  fails with a full disk, and checks the error is shown and the old result
+  is gone.
+
 - **The camera was called "in stock" when it wasn't.** Twice (2026-10-17
   and 2026-10-21) Claude read the Reolink CX410's stock from the hidden
   product data in the page's source, which said `InStock`. The page a
