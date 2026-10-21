@@ -35,7 +35,10 @@ across that is about 108–145 pixels a metre (my arithmetic).
 
 ## Decision
 
-**Reolink CX410**, $84.99 at Reolink's US store, in stock on 2026-10-17.
+**Reolink CX410**, $84.99 at Reolink's US store. ("In stock" was recorded
+here on 2026-10-17 and was wrong: the store showed Notify Me. On
+2026-10-21 the in-stock match is the CX810; see `docs/parts.md` and
+`docs/lessons.md`.)
 Its specs, from Reolink's product page:
 
 - **Picture:** 1/1.8" sensor, f=4 mm F1.0 lens, 89° across by 46° up and

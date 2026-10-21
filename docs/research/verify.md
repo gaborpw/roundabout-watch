@@ -30,3 +30,4 @@ runs live or anything is shared with anyone.
 | The desktop draws 100–200 W on average with the detector running (about $15–30 a month) | ADR 0011 | Estimate; measure with a plug-in meter or the GPU's own reading | |
 | The M4 MacBook Air has no fan, so it slows under hours of load | ADR 0011 | General knowledge | |
 | Cat5e and Cat6 both carry 802.3af PoE to the camera | `docs/parts.md` | General knowledge | |
+| The CX810 has the CX410's 1/1.8" sensor and F1.0 lens, and no infrared | `docs/parts.md` | Reolink's CX810 spec page only (2026-10-21); a second source, or the camera itself, confirms it | |

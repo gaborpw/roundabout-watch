@@ -43,8 +43,9 @@ Nothing watches a camera yet.
 
 Oldest first. Each stays here until it's done or Peter drops it.
 
-1. **Order the parts** in `docs/parts.md`: the Reolink CX410 and the PoE
-   adapter, $92.99, plus cables only if Peter's own are too short. Peter,
+1. **Pick and order the camera**, then the PoE adapter ($8.00). The CX410
+   is out of stock (2026-10-21); the in-stock match is the CX810 at
+   $110.49, or Peter waits for the CX410 (`docs/parts.md`). Peter,
    2026-10-17: "ill get the camera and adapter soon".
 2. **A phone video of the roundabout from the window**, about 5 minutes, for
    the first test on the Mac. Peter, 2026-10-17: "ikl do the video maybe

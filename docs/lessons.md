@@ -19,6 +19,17 @@ Newest first. Format: date, what happened, cause, guard.
 
 ## 2026-10-21
 
+- **The camera was called "in stock" when it wasn't.** Twice (2026-10-17
+  and 2026-10-21) Claude read the Reolink CX410's stock from the hidden
+  product data in the page's source, which said `InStock`. The page a
+  person sees showed **Notify Me**; Peter's screenshot caught it. The page
+  draws its buy button with JavaScript after loading, and its source holds
+  both buttons, so only the rendered page tells the truth. Cause: one
+  source, and the wrong one, for something that costs money (CLAUDE.md
+  12). Guard: stock is read from the button a real browser shows (headless
+  Chromium, preinstalled in the cloud sessions), and `docs/parts.md` says
+  so beside every stock claim.
+
 - **Peter's first iPhone video came out sideways, and the detector missed
   most of it.** `replay` found 3 car tracks, only in the last few seconds,
   where Peter saw 2 cars. An iPhone held upright stores the picture sideways
