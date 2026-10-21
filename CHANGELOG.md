@@ -6,6 +6,13 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **An app to try videos, with statistics** (Peter's ask, 2026-10-21; ADR
+  0012). `streamlit run src/roundabout_watch/app.py` opens a page on the
+  Mac: drop in a video of any length, and get it back marked up, with
+  counts by kind, arrivals over time, time in view and a timeline. It runs
+  on that computer only, with Streamlit's usage statistics and Deploy
+  button off.
+
 - **Phone videos filmed upright are turned the right way up** (found on
   Peter's first video, 2026-10-21). They were read sideways, and the
   detector missed most of what was in them; upright, it found the 2 cars

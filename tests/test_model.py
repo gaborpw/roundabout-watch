@@ -15,6 +15,7 @@ from roundabout_watch.model import (
     Track,
     TrackedDetection,
     TrackPoint,
+    TrackSpan,
 )
 
 
@@ -136,3 +137,33 @@ def test_tracked_detection_rejects_a_negative_track() -> None:
     # ByteTrack uses -1 for "not a track yet"; those never become one.
     with pytest.raises(ValueError):
         TrackedDetection(track_id=-1, detection=_detection())
+
+
+# --- track spans --------------------------------------------------------------
+
+
+def test_span_knows_how_long_it_was_in_view() -> None:
+    span = TrackSpan(track_id=1, kind=RoadUser.CAR, first_s=2.0, last_s=5.5, frames=90)
+    assert span.seconds == 3.5
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"track_id": -1},
+        {"first_s": math.nan},
+        {"last_s": 1.0},  # before first_s
+        {"frames": 0},
+    ],
+)
+def test_span_rejects_impossible_values(overrides: dict[str, object]) -> None:
+    values: dict[str, object] = {
+        "track_id": 1,
+        "kind": RoadUser.CAR,
+        "first_s": 2.0,
+        "last_s": 5.5,
+        "frames": 90,
+    }
+    values.update(overrides)
+    with pytest.raises(ValueError):
+        TrackSpan(**values)  # type: ignore[arg-type]

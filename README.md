@@ -49,7 +49,26 @@ uv run mypy
 uv run pytest
 ```
 
-## Try it on a video (the first look)
+## Try a video in the app
+
+The easiest way. On the Mac, from the folder you cloned into:
+
+```sh
+cd ~/roundabout-watch
+git pull
+uv sync --extra detector
+uv run streamlit run src/roundabout_watch/app.py
+```
+
+Your browser opens the app at http://localhost:8501. Drop a video in (up to
+1,000 MB), or choose "A file on this computer" and type its path for any
+size, then press **Run**. You get the video back with every road user
+boxed, numbered and trailed, and what was seen: counts by kind, arrivals
+over time, how long each stayed in view, and a timeline. Nothing leaves the
+computer, and the video is deleted from the app's temporary folder when
+it's done. Stop the app with Ctrl-C in Terminal.
+
+## Try it on a video from the command line (the first look)
 
 On the Mac, with a video of the roundabout from the phone (AirDrop puts it in
 Downloads). Landscape works best.

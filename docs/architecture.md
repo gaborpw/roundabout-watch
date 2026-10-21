@@ -55,7 +55,7 @@ one pull request at a time, in the order under "Build order".
 | `overlay.py` | Draws boxes, labels and two-second trails on the frames (supervision) and writes them as H.264 MP4 (PyAV), for `replay`'s copy. **Exists.** | yes |
 | `replay.py` | Runs a video file through ingest, detect and track and writes the drawn copy. Today it stops at tracking: no metres until `ground.py`. **Exists.** | yes, with a stand-in detector |
 | `clips.py` | Writes the packet buffer around an event to an MP4 without re-encoding, so a clip costs almost no CPU and keeps the camera's quality (ADR 0007). | yes (on a fixture clip) |
-| `pages/` | The Streamlit app (ADR 0012): review (play the clip, confirm or dismiss with a reason), map, when, how close, who, traffic. The numbers behind each page are plain functions. | the functions, yes |
+| `app.py`, `trial.py`, `stats.py` | The Streamlit app (ADR 0012). Today one page, **Try a video**: run `replay` on a dropped-in or named video and show it drawn on, with counts, arrivals, time in view and a timeline (`trial.py` does the work, `stats.py` the numbers). **Exists.** Review, map, when, how close, who and traffic come as their data does. | yes (the page through Streamlit's AppTest, with a stand-in detector) |
 | `enrich.py` | Optional: OHGO incidents near the roundabout, shown next to our events. | yes (on saved JSON) |
 | `__main__.py` | `python -m roundabout_watch replay <video>` (**exists**: a recorded file, on any machine); later `run` (live) and `calibrate` (helps fill `calibration.yaml`). | yes |
 
@@ -160,8 +160,9 @@ One pull request each, each with its tests, each after Peter's yes
 6. Live: go2rtc, the recorder and sweeper (retention must exist before
    continuous recording does), `ingest.py` live mode, `clips.py`, and the
    pipeline starting by itself on the desktop.
-7. `pages/`: review and charts in Streamlit (ADR 0012), once `replay` or
-   the camera has put data in the database.
+7. The rest of the Streamlit app: review and charts (ADR 0012), once
+   `replay` or the camera has put data in the database. Its first page,
+   **Try a video**, exists (2026-10-21).
 8. `enrich.py`: OHGO incidents.
 
 ## Sources (read 2026-10-17)

@@ -36,6 +36,11 @@ Last updated 2026-10-17.
   of recording, deleted once processed; every road user's path for 90 days
   and a summary of each until deleted; review and charts in Streamlit. The
   desktop has two 12 TB drives.
+- **The first look works on Peter's own video** (2026-10-21): an iPhone
+  clip of the roundabout at night, through the window. Once phone videos
+  were turned upright (PR #12), it found and followed the 2 cars Peter saw.
+- **The "Try a video" app** (ADR 0012, 2026-10-21): drop in a video on the
+  Mac, get it back marked up with statistics (README).
 
 Nothing watches a camera yet.
 
@@ -46,17 +51,14 @@ Oldest first. Each stays here until it's done or Peter drops it.
 1. **Order the parts** in `docs/parts.md`: the Reolink CX410 and the PoE
    adapter, $92.99, plus cables only if Peter's own are too short. Peter,
    2026-10-17: "ill get the camera and adapter soon".
-2. **A phone video of the roundabout from the window**, about 5 minutes, for
-   the first test on the Mac. Peter, 2026-10-17: "ikl do the video maybe
-   tomorrow".
 
 ## Next
 
-1. **First look, on Peter's video.** `replay` exists (build step 1a): it
-   runs RF-DETR and ByteTrack on a video file and writes a copy with a box
-   and a trail on every road user (README, "Try it on a video"). Run it on
-   the phone video and look at what it misses. No near-miss numbers yet;
-   those need calibration.
+1. **Calibration** (build step 2: `config.py`, `ground.py`), proposed to
+   Peter on 2026-10-21 as the next pull request. Pixels become metres, so
+   speeds and near-misses can be measured. A phone video can be calibrated
+   from points read off a satellite map; the camera gets its own once it's
+   mounted.
 2. Build step 1b: rectangles instead of discs in `safety.py` (2D-TTC).
    Then step 2, `config.py` and `ground.py` (calibration). Neither needs
    hardware.
