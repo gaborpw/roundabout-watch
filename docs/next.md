@@ -66,7 +66,14 @@ Oldest first. Each stays here until it's done or Peter drops it.
    the camera gets its own once it's mounted.
    1. The maths, `ground.py` (this pull request).
    2. A "Calibrate" page in the app: click the points on a frame and paste
-      their map positions, to write `calibration.yaml`.
-   3. Speeds in "Try a video".
+      their map positions, to write `calibration.yaml`. It shows the fit
+      report and names the point to re-check.
+   3. Speeds in "Try a video". **Not before a gate:** `ground.py` builds
+      from any calibration whose points fix a perspective, however badly
+      they agree, so speeds are shown only from one with at least six
+      points (four always fit exactly and can't check themselves) and a
+      fit error under a limit in `config.yaml`, read through `config.py`.
+      The limit is Peter's call, with a suggestion when step 3 is built
+      (review of PR #17, 2026-10-21).
 2. Build step 1b: rectangles instead of discs in `safety.py` (2D-TTC).
    Needs no hardware.
