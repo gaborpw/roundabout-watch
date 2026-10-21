@@ -122,6 +122,7 @@ Decided in ADR 0011 (Peter's choice, 2026-10-17). Everything stays at home.
 | `trackers` (ByteTrack, OC-SORT) | Apache-2.0 | Depends on `opencv-python`, which clashes with `opencv-python-headless`; install only one. |
 | supervision | MIT | Drawing and zones only; its ByteTrack was removed in 0.31.0 (2026-10-16). |
 | go2rtc | MIT | |
+| Altair | BSD-3-Clause | Draws the app's timeline chart; Streamlit uses it too. |
 | Streamlit | Apache-2.0 | Sends usage statistics by default; `.streamlit/config.toml` turns them off (ADR 0012). |
 | numpy | BSD-3-Clause | Arrays for frames and boxes. |
 | PyAV | BSD | Its wheels bundle libx264 and libx265, which are GPL (general knowledge): it matters only if the program is ever given to anyone. |
