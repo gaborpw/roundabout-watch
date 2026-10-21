@@ -10,6 +10,11 @@ gatherUsageStats = false
 # This computer only. Reaching it from a phone on the home Wi-Fi (ADR 0012)
 # is for the desktop; a laptop on someone else's Wi-Fi must not be reachable.
 address = "localhost"
+# Streamlit's first start asks for an email in Terminal, and sends any
+# address typed to Streamlit's own servers whether or not usage statistics
+# are on (streamlit/runtime/credentials.py, 1.66.1). Peter typed his on
+# 2026-10-21 not knowing that. Don't ask.
+showEmailPrompt = false
 # Megabytes. Streamlit's default is 200, about three minutes of 1080p phone
 # video, and it holds an upload in memory. Longer videos: "A file on this
 # computer", which has no limit.

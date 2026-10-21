@@ -6,6 +6,12 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **The app no longer asks for an email on its first start** (found on
+  Peter's Mac, 2026-10-21). Streamlit sends any address typed there to its
+  own servers. A test now checks every setting that keeps the app local.
+  Also drops a deprecated chart setting and ignores Streamlit's agent
+  "skills" symlinks.
+
 - **An app to try videos, with statistics** (Peter's ask, 2026-10-21; ADR
   0012). `streamlit run src/roundabout_watch/app.py` opens a page on the
   Mac: drop in a video of any length, and get it back marked up, with

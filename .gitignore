@@ -32,3 +32,8 @@ __pycache__/
 dist/
 build/
 *.egg-info/
+
+# Streamlit's "skills" for AI coding agents, installed as symlinks into the
+# local environment; Streamlit itself says not to commit them.
+.agents/skills/developing-with-streamlit
+.claude/skills/developing-with-streamlit

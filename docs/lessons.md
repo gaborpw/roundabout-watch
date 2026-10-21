@@ -19,6 +19,17 @@ Newest first. Format: date, what happened, cause, guard.
 
 ## 2026-10-21
 
+- **Streamlit sent Peter's email address to Streamlit on the app's first
+  start.** Its first run asks in Terminal for an email "to receive helpful
+  onboarding emails"; Peter typed his, and Streamlit posts any address
+  typed to its own servers, even with usage statistics off (its
+  `credentials.py`). The project's `.streamlit/config.toml` turned off
+  usage statistics but not that prompt. Cause: only the setting the docs
+  advertise was checked, not what the first run does. Guard:
+  `server.showEmailPrompt = false` in `.streamlit/config.toml`, and
+  `test_streamlit_config_keeps_everything_local` fails if it, the usage
+  statistics, the Deploy button or the localhost address is switched back.
+
 - **A failed video run on the app page kept the last video's result on
   screen** (caught by the automatic review on PR #14, before it merged). A
   full disk or an unreadable file raised `OSError`, which the page didn't
