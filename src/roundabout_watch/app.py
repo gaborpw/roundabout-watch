@@ -80,10 +80,17 @@ if st.button("Run", type="primary", disabled=upload is None and not path_text, k
             trial.video_suffix(video.name)
             result = trial.run(video, video.name, found, progress)
     except RuntimeError as err:
-        # Our own sentence, such as how to install the detector.
+        # Our own sentence, such as how to install the detector, or PyTorch
+        # running out of memory on a large detector size.
+        st.session_state.pop("result", None)
+        log.error("trying a video failed: %s", type(err).__name__)
         st.error(str(err))
-    except (av.FFmpegError, ValueError) as err:
-        log.error("trying a video failed: %s", err)
+    except (av.FFmpegError, ValueError, OSError) as err:
+        # A failed run must not leave the last video's result on screen as
+        # if it were this one's. OSError covers a full disk or a file this
+        # computer won't let us read.
+        st.session_state.pop("result", None)
+        log.error("trying a video failed: %s", type(err).__name__)
         st.error(f"Couldn't use that video: {err}.")
     else:
         st.session_state["result"] = result

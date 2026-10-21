@@ -68,3 +68,26 @@ def test_a_video_on_this_computer_shows_its_result(
     assert metrics["Road users seen"] == "2"
     assert metrics["Car"] == "1"
     assert metrics["Pedestrian"] == "1"
+
+
+def test_a_failed_run_clears_the_last_result(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(trial, "load_detector", lambda size: _Squares())
+    video = tmp_path / "squares.mp4"
+    write_squares_video(video, frames=12)
+    at = _app().run()
+    at.radio(key="source").set_value("A file on this computer").run()
+    at.text_input(key="path").input(str(video)).run()
+    at.button(key="run").click().run()
+    assert at.header[0].value == "squares.mp4"
+
+    def full_disk(*args: object, **kwargs: object) -> None:
+        raise OSError("No space left on device")
+
+    monkeypatch.setattr(trial, "run", full_disk)
+    at.button(key="run").click().run()
+    assert not at.exception
+    assert "No space left on device" in at.error[0].value
+    # The first video's result is gone, not shown as this run's.
+    assert not at.header
