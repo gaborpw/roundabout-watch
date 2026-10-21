@@ -86,9 +86,10 @@ only if his are too short:
 
 | Part | Price |
 |---|---|
-| Reolink CX410 | $84.99 |
+| Reolink CX410 (out of stock, 2026-10-21) | $84.99 |
 | UniFi PoE Adapter (15W) | $8.00 |
-| **Total** | **$92.99** |
+| **Total with the CX410** | **$92.99** |
+| **Total with the CX810 instead** ($110.49, in stock) | **$118.49** |
 | Cables, only if Peter's are too short (10 ft + 3 ft) | +$18.00 |
 
 Before tax, shipping and hardware-store items. Earlier versions of this list:
