@@ -6,6 +6,12 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **Pixels can become metres** (calibration, step 1 of 3; Peter's yes,
+  2026-10-21). `ground.py` reads `calibration.yaml` (spots in the video
+  paired with their positions from a map), fits the mapping, and says how
+  well the spots agree and, from six spots, which one to re-check. Nothing
+  uses it yet: the app page to make a calibration and the speeds come next.
+
 - **The desktop uses its graphics card** (Peter's yes, 2026-10-21). On
   Windows, PyTorch now comes from PyTorch's own CUDA 13.0 build instead of
   PyPI's, which runs on the processor only. The Mac installs exactly what

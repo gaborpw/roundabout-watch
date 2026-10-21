@@ -1,0 +1,40 @@
+# The shape of calibration.yaml, which ground.py reads (docs/architecture.md).
+#
+# EXAMPLE VALUES: these numbers are made up to show the format. They are not
+# a real place and were not surveyed. Copy this to calibration.yaml (which
+# git ignores, because it belongs to one camera view) and replace them.
+#
+# image_size: the picture the pixels were read from, width then height, as
+#   the video plays upright.
+# points: at least 4 spots that are on the road surface and easy to find
+#   both in the video and on a satellite map: the base of a lamp post, a
+#   crosswalk corner, a manhole, a curb corner. Spread them across the
+#   picture, not along one line. 6 or more lets the fit check itself.
+#   - pixel: [x, y] in the picture, from the top-left corner.
+#   - lat, lon: from the map. In Google Maps on a computer, right-click the
+#     spot, then click the latitude and longitude at the top of the pop-up
+#     to copy them (Google Maps Help, "Search by latitude & longitude",
+#     https://support.google.com/maps/answer/18539, read 2026-10-21).
+
+image_size: [1920, 1080]
+points:
+  - name: example corner A
+    pixel: [420, 860]
+    lat: 10.000000
+    lon: 20.000000
+  - name: example corner B
+    pixel: [1510, 880]
+    lat: 10.000000
+    lon: 20.000300
+  - name: example corner C
+    pixel: [1240, 420]
+    lat: 10.000250
+    lon: 20.000300
+  - name: example corner D
+    pixel: [650, 410]
+    lat: 10.000250
+    lon: 20.000000
+  - name: example drain
+    pixel: [960, 560]
+    lat: 10.000150
+    lon: 20.000150
