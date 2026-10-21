@@ -13,6 +13,11 @@ dependencies = [
     "altair>=6.3.0",
     "av>=19.0.1",
     "numpy>=2.0.2",
+    # findHomography for ground.py. trackers already brings this same
+    # package; named here because ground.py imports it directly.
+    "opencv-python>=5.0.0.93",
+    # Reads calibration.yaml. Already brought by supervision and trackers.
+    "pyyaml>=6.0.3",
     "streamlit>=1.66.0",
     "supervision>=0.31.0",
     "trackers>=2.6.1",
@@ -44,6 +49,8 @@ dev = [
     "mypy>=2.4.0",
     "pytest>=9.1.1",
     "ruff>=0.17.1",
+    # PyYAML ships no types, and mypy --strict needs them.
+    "types-pyyaml>=6.0.12.20260906",
 ]
 
 [build-system]

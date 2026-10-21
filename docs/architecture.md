@@ -46,7 +46,7 @@ one pull request at a time, in the order under "Build order".
 | `model.py` | The shared types: Frame, Detection and TrackedDetection (pixels), TrackPoint and Track (metres), Event and its status. **Exists.** | yes |
 | `config.py` | Reads `config.yaml` (thresholds, retention, camera name) and `.env` (secrets), validates both at load (CLAUDE.md 17). | yes |
 | `safety.py` | Pure maths: TTC, PET, DRAC, speed difference (SSAM's DeltaS) and the conflict angle (rear-end below 30°, crossing above 85°, as in FHWA's SSAM). No camera, no GPU, no files (CLAUDE.md 30). **Exists**, with road users as discs; SSAM's rectangles (2D-TTC) are the next step. | yes |
-| `ground.py` | Turns pixels into metres. Fits a homography from at least four surveyed points in `calibration.yaml` (OpenCV `findHomography`), reports the reprojection error, and **refuses to run uncalibrated**. Projects each detection's ground-contact point (bottom-middle of its box). | yes |
+| `ground.py` | Turns pixels into metres. Fits a homography from at least four points in `calibration.yaml`, each a pixel and its latitude and longitude from a map (OpenCV `findHomography`, least squares over every point). Reports how far each point lands from its map position and, from six points, which one to re-check. Refuses points on one line or kilometres apart, a video of another size, and **refuses to run uncalibrated**. Projects each detection's ground-contact point (bottom-middle of its box); a point above the horizon has no ground position. **Exists** (2026-10-21); `calibration.example.yaml` shows the file's shape. | yes |
 | `flag.py` | Decides what is worth a look. Near-miss: a pair whose TTC or PET falls under the configured threshold. Possible crash: two tracks overlapping on the ground, then both stopping for more than N seconds (a heuristic; ADR 0002 says a person decides). | yes |
 | `store.py` | SQLite through the standard library's `sqlite3`, parameterised queries only (CLAUDE.md 18). Events, their measures, review status and the reviewer's reason; every road user's path and its one-line summary (ADR 0006). | yes |
 | `ingest.py` | PyAV reads a video file into RGB frames, with each frame's own timestamp, decoding only the video track. **File mode exists.** Live mode (build step 6) reads go2rtc's stream, keeps a ring buffer of compressed packets so clips can start before the event, reconnects with back-off, and strips URLs from error text before logging (CLAUDE.md 16). | file mode, yes |
@@ -127,7 +127,8 @@ Decided in ADR 0011 (Peter's choice, 2026-10-17). Everything stays at home.
 | numpy | BSD-3-Clause | Arrays for frames and boxes. |
 | PyTorch, torchvision | BSD-3-Clause (torch also bundles Apache-2.0, BSD-2, BSL-1.0 and MIT parts); BSD | Come with RF-DETR. On Windows they come from PyTorch's own CUDA 13.0 index, not PyPI, so the desktop's GPU is used (ADR 0011); that build also carries NVIDIA's CUDA libraries under NVIDIA's licence (general knowledge). |
 | PyAV | BSD | Its wheels bundle libx264 and libx265, which are GPL (general knowledge): it matters only if the program is ever given to anyone. |
-| OpenCV | Apache-2.0 | `findHomography` for `ground.py`. |
+| OpenCV (`opencv-python`) | Apache-2.0 | `findHomography` for `ground.py`. The same package `trackers` brings. |
+| PyYAML | MIT | Reads `calibration.yaml` with `safe_load` only. Already brought by supervision and trackers; `types-pyyaml` (Apache-2.0) gives mypy its types. |
 | Traffic Intelligence, 2D-TTC | MIT | References for `safety.py`, not dependencies. `safety.py` follows SSAM's definitions; 2D-TTC's rectangle model gets ported, with attribution, in step 1b. |
 | **Avoided:** Ultralytics YOLO | AGPL-3.0 | Trained models are AGPL too; using it as a service means open-sourcing everything or a paid licence. |
 | **Avoided:** BoxMOT | AGPL-3.0 | |
@@ -152,7 +153,10 @@ One pull request each, each with its tests, each after Peter's yes
    1b. Rectangles instead of discs (2D-TTC), checked against the 2D-TTC
    repo's results.
 2. `config.py` and `ground.py`: calibration file, homography, reprojection
-   error, the `calibrate` helper.
+   error, the `calibrate` helper. `ground.py` **done** (2026-10-21); next a
+   "Calibrate" page in the app to fill `calibration.yaml` by clicking, then
+   speeds in "Try a video". `config.py` comes with `flag.py`, which is the
+   first thing that needs thresholds.
 3. `flag.py` + `store.py`: from tracks to flagged events in SQLite, tested
    with hand-built tracks.
 4. `replay` all the way through: ground, measure, flag and store on a

@@ -18,6 +18,10 @@ clips/
 *.engine
 models/
 
+# A calibration belongs to one camera view on one machine, and pins the
+# view to a place; calibration.example.yaml shows its shape.
+calibration.yaml
+
 # The event database lives next to the footage, not in git.
 *.db
 *.sqlite3

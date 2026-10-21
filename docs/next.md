@@ -60,11 +60,13 @@ Oldest first. Each stays here until it's done or Peter drops it.
 
 ## Next
 
-1. **Calibration** (build step 2: `config.py`, `ground.py`), Peter's yes
-   on 2026-10-21 as the next pull request. Pixels become metres, so
-   speeds and near-misses can be measured. A phone video can be calibrated
-   from points read off a satellite map; the camera gets its own once it's
-   mounted.
+1. **Calibration**, in three pull requests (Peter's yes, 2026-10-21).
+   Pixels become metres, so speeds and near-misses can be measured. A
+   phone video can be calibrated from points read off a satellite map;
+   the camera gets its own once it's mounted.
+   1. The maths, `ground.py` (this pull request).
+   2. A "Calibrate" page in the app: click the points on a frame and paste
+      their map positions, to write `calibration.yaml`.
+   3. Speeds in "Try a video".
 2. Build step 1b: rectangles instead of discs in `safety.py` (2D-TTC).
-   Then step 2, `config.py` and `ground.py` (calibration). Neither needs
-   hardware.
+   Needs no hardware.
