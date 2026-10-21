@@ -153,6 +153,6 @@ if isinstance(shown, trial.Result):
                 color=alt.Color("kind:N", title=None),
                 tooltip=["road user:N", "arrived:Q", "left:Q", "in view:Q"],
             ),
-            use_container_width=True,
+            width="stretch",
         )
         st.dataframe(rows, hide_index=True)
