@@ -21,7 +21,23 @@ dependencies = [
 [project.optional-dependencies]
 # RF-DETR brings PyTorch, gigabytes of it, so CI never installs it
 # (CLAUDE.md 37). On the Mac or the desktop: `uv sync --extra detector`.
-detector = ["rfdetr>=1.11.2"]
+# torch and torchvision come with rfdetr anyway; they're named here only
+# because uv applies [tool.uv.sources] to direct dependencies alone.
+detector = ["rfdetr>=1.11.2", "torch>=2.14.1", "torchvision>=0.29.1"]
+
+# PyPI's PyTorch for Windows runs on the CPU only, so on the desktop it
+# comes from PyTorch's own CUDA 13.0 index instead, to use the 3080 Ti
+# (ADR 0011). The Mac and Linux keep PyPI's: the marker limits this to
+# Windows. explicit = true keeps every other package on PyPI. Shape from
+# uv's PyTorch guide: https://docs.astral.sh/uv/guides/integration/pytorch/
+[[tool.uv.index]]
+name = "pytorch-cu130"
+url = "https://download.pytorch.org/whl/cu130"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cu130", marker = "sys_platform == 'win32'" }]
+torchvision = [{ index = "pytorch-cu130", marker = "sys_platform == 'win32'" }]
 
 [dependency-groups]
 dev = [

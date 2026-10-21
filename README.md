@@ -88,6 +88,8 @@ every car, bike and person; open it in QuickTime.
   default size), so it's slow once.
 - `--model medium` finds more and runs slower; `--model nano` the opposite.
 - The Mac's GPU is used automatically.
-- On the Windows desktop the same commands work, on the CPU only for now:
-  PyPI's PyTorch for Windows has no CUDA (its CUDA libraries are listed for
-  Linux only in `uv.lock`). Using the 3080 Ti comes with build step 6.
+- On the Windows desktop the same commands work, on the 3080 Ti: Windows
+  gets PyTorch's CUDA 13.0 build (`pyproject.toml`), which needs a recent
+  NVIDIA driver. To check that the GPU is in use:
+  `uv run python -c "import torch; print(torch.cuda.is_available())"`
+  prints `True`.

@@ -3,7 +3,7 @@
 Read this at the start of a new session. It is the part of the conversation
 with Peter that isn't anywhere else in the repo. Update it when things move.
 
-Last updated 2026-10-17.
+Last updated 2026-10-21.
 
 ## Done
 
@@ -41,6 +41,11 @@ Last updated 2026-10-17.
   were turned upright (PR #12), it found and followed the 2 cars Peter saw.
 - **The "Try a video" app** (ADR 0012, 2026-10-21): drop in a video on the
   Mac, get it back marked up with statistics (README).
+- **Retention confirmed** (Peter, 2026-10-21: "sure this works"): 30 days
+  for clips not confirmed, 90 days for full paths (ADR 0006).
+- **The desktop can use its 3080 Ti** (2026-10-21): Windows installs
+  PyTorch's CUDA build. Not yet run on the desktop; Peter is testing on
+  the Mac for now.
 
 Nothing watches a camera yet.
 
@@ -55,8 +60,8 @@ Oldest first. Each stays here until it's done or Peter drops it.
 
 ## Next
 
-1. **Calibration** (build step 2: `config.py`, `ground.py`), proposed to
-   Peter on 2026-10-21 as the next pull request. Pixels become metres, so
+1. **Calibration** (build step 2: `config.py`, `ground.py`), Peter's yes
+   on 2026-10-21 as the next pull request. Pixels become metres, so
    speeds and near-misses can be measured. A phone video can be calibrated
    from points read off a satellite map; the camera gets its own once it's
    mounted.

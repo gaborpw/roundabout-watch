@@ -6,6 +6,11 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **The desktop uses its graphics card** (Peter's yes, 2026-10-21). On
+  Windows, PyTorch now comes from PyTorch's own CUDA 13.0 build instead of
+  PyPI's, which runs on the processor only. The Mac installs exactly what
+  it did before.
+
 - **The app no longer asks for an email on its first start** (found on
   Peter's Mac, 2026-10-21). Streamlit sends any address typed there to its
   own servers. A test now checks every setting that keeps the app local.
