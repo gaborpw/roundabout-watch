@@ -17,6 +17,19 @@ How it works:
 
 Newest first. Format: date, what happened, cause, guard.
 
+## 2026-10-21
+
+- **Peter's first iPhone video came out sideways, and the detector missed
+  most of it.** `replay` found 3 car tracks, only in the last few seconds,
+  where Peter saw 2 cars. An iPhone held upright stores the picture sideways
+  with a note to turn it (PyAV's `VideoFrame.rotation`, -90 here), and
+  `ingest.py` ignored the note. Sideways, the cars scored 0.44–0.74, mostly
+  under the 0.7 needed to start a track; upright, 0.85–0.95, and the run
+  found exactly the 2 cars. Cause: the tests used videos written by our own
+  helper, which never carries a rotation. Guard:
+  `test_a_phone_video_filmed_upright_is_turned_upright` writes a video with
+  an iPhone's -90 note and checks the frames come out upright.
+
 ## 2026-10-17
 
 - **A merged pull request never reached `main`.** PR #9 was opened on top

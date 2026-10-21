@@ -36,12 +36,18 @@ def square_boxes(frames: int) -> list[tuple[Box, Box]]:
     return boxes
 
 
-def write_squares_video(path: Path, frames: int = 10) -> list[tuple[Box, Box]]:
-    """Writes the squares as an H.264 MP4 and returns their boxes."""
+def write_squares_video(path: Path, frames: int = 10, rotation: int = 0) -> list[tuple[Box, Box]]:
+    """Writes the squares as an H.264 MP4 and returns their boxes, as stored.
+
+    rotation adds the note a phone leaves when it was held upright: the
+    picture is stored sideways and players turn it by this many degrees
+    counterclockwise (an iPhone held upright writes -90)."""
     boxes = square_boxes(frames)
     with av.open(str(path), mode="w") as container:
         stream = container.add_stream("h264", rate=Fraction(FPS))
         stream.width, stream.height, stream.pix_fmt = WIDTH, HEIGHT, "yuv420p"
+        if rotation:
+            stream.set_display_rotation(rotation)
         for a, b in boxes:
             image = np.zeros((HEIGHT, WIDTH, 3), dtype=np.uint8)
             for (left, top, right, bottom), shade in ((a, 255), (b, 160)):
