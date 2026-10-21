@@ -125,6 +125,7 @@ Decided in ADR 0011 (Peter's choice, 2026-10-17). Everything stays at home.
 | Altair | BSD-3-Clause | Draws the app's timeline chart; Streamlit uses it too. |
 | Streamlit | Apache-2.0 | Sends usage statistics by default; `.streamlit/config.toml` turns them off (ADR 0012). |
 | numpy | BSD-3-Clause | Arrays for frames and boxes. |
+| PyTorch, torchvision | BSD-3-Clause (torch also bundles Apache-2.0, BSD-2, BSL-1.0 and MIT parts); BSD | Come with RF-DETR. On Windows they come from PyTorch's own CUDA 13.0 index, not PyPI, so the desktop's GPU is used (ADR 0011); that build also carries NVIDIA's CUDA libraries under NVIDIA's licence (general knowledge). |
 | PyAV | BSD | Its wheels bundle libx264 and libx265, which are GPL (general knowledge): it matters only if the program is ever given to anyone. |
 | OpenCV | Apache-2.0 | `findHomography` for `ground.py`. |
 | Traffic Intelligence, 2D-TTC | MIT | References for `safety.py`, not dependencies. `safety.py` follows SSAM's definitions; 2D-TTC's rectangle model gets ported, with attribution, in step 1b. |
@@ -177,6 +178,9 @@ One pull request each, each with its tests, each after Peter's yes
   release notes: https://github.com/roboflow/supervision/releases ; BoxMOT:
   https://github.com/mikel-brostrom/boxmot
 - Where it runs, PyAV's Python floor and the power estimate: ADR 0011.
+- PyTorch and torchvision licences (read 2026-10-21):
+  https://pypi.org/project/torch/2.14.1/ and
+  https://pypi.org/project/torchvision/0.29.1/
 - DeepStream Python bindings: https://github.com/NVIDIA-AI-IOT/deepstream_python_apps
 - go2rtc: https://github.com/AlexxIT/go2rtc
 - SSAM TTC default and conflict angles:
