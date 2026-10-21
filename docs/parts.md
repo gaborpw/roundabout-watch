@@ -2,8 +2,10 @@
 
 Everything to buy, as a checklist, for the camera behind Peter's
 second-floor window (ADR 0005). Peter's own desktop runs the analysis
-(ADR 0011), so the camera and its power are all there is to buy. Prices and
-stock were read on **2026-10-17** from each store's own product data.
+(ADR 0011), so the camera and its power are all there is to buy. Prices
+were read on 2026-10-17; stock was re-checked on **2026-10-21** from the
+button each store's page actually shows in a browser (docs/lessons.md:
+the page's hidden data said "in stock" when the button said Notify Me).
 Re-check before ordering.
 
 Several big stores (Amazon, B&H, Newegg, Micro Center, Best Buy, Walmart)
@@ -32,7 +34,18 @@ set on either end, so it can't reach the internet (CLAUDE.md 22, ADR 0011).
   - H.264, RTSP and ONVIF; powered over the network cable (PoE 802.3af).
   - Quantity: 1.
   - Link: [Reolink CX410](https://reolink.com/us/product/cx410/)
-  - Price: **$84.99**, in stock.
+  - Price: **$84.99**. **Out of stock on 2026-10-21** (Reolink's page shows
+    Notify Me; Peter found it first).
+  - **In stock instead: [Reolink CX810](https://reolink.com/us/product/cx810/),
+    $110.49** (2026-10-21). The same 1/1.8" sensor and F1.0 lens, no
+    infrared, 4K, 93.2° view, H.264 or H.265, RTSP and ONVIF, PoE 802.3af
+    (Reolink's spec page). $10.49 over the ~$100 budget; Peter decides.
+  - Cheaper in stock, but weak at night behind glass (1/2.7" sensor, F2.0,
+    infrared that must stay off): [RLC-810A](https://reolink.com/us/product/rlc-810a/)
+    $84.99, [RLC-510A](https://reolink.com/us/product/rlc-510a/) $70.49.
+  - Amcrest: almost every PoE model was Sold Out on its own store on
+    2026-10-21, reportedly because Dahua-made products can no longer be
+    imported (a reposted Amcrest notice, unconfirmed).
   - Alternative: [Reolink E1 Outdoor](https://reolink.com/us/product/e1-outdoor/),
     $113.99. It has a 3× zoom, but at 9–12 m it's worse (20 fps, smaller
     sensor, 12 V adapter).
@@ -42,7 +55,7 @@ set on either end, so it can't reach the internet (CLAUDE.md 22, ADR 0011).
   separately, so this replaces it.
   - Quantity: 1.
   - Link: [UniFi PoE Adapter (15W)](https://store.ui.com/us/en/category/accessories-poe-power/collections/pro-store-poe-and-power-adapters/products/u-poe-af)
-  - Price: **$8.00**, in stock.
+  - Price: **$8.00**, in stock (Add to Cart, 2026-10-21).
   - Ubiquiti's page doesn't name the 802.3af standard; resellers list this
     adapter (U-POE-af) as 802.3af. Check that the camera powers up when it
     arrives.
@@ -73,9 +86,10 @@ only if his are too short:
 
 | Part | Price |
 |---|---|
-| Reolink CX410 | $84.99 |
+| Reolink CX410 (out of stock, 2026-10-21) | $84.99 |
 | UniFi PoE Adapter (15W) | $8.00 |
-| **Total** | **$92.99** |
+| **Total with the CX410** | **$92.99** |
+| **Total with the CX810 instead** ($110.49, in stock) | **$118.49** |
 | Cables, only if Peter's are too short (10 ft + 3 ft) | +$18.00 |
 
 Before tax, shipping and hardware-store items. Earlier versions of this list:
@@ -98,5 +112,6 @@ Before tax, shipping and hardware-store items. Earlier versions of this list:
 
 ## Sources (read 2026-10-17)
 
-- Every product: its own page, linked above (price and stock from the page's
-  built-in offer data where the page draws them by script).
+- Every product: its own page, linked above. Prices from the page's
+  built-in offer data; stock from the button the rendered page shows
+  (headless Chromium, 2026-10-21), never from the offer data alone.
