@@ -36,9 +36,7 @@ def square_boxes(frames: int) -> list[tuple[Box, Box]]:
     return boxes
 
 
-def write_squares_video(
-    path: Path, frames: int = 10, rotation: int = 0
-) -> list[tuple[Box, Box]]:
+def write_squares_video(path: Path, frames: int = 10, rotation: int = 0) -> list[tuple[Box, Box]]:
     """Writes the squares as an H.264 MP4 and returns their boxes, as stored.
 
     rotation adds the note a phone leaves when it was held upright: the

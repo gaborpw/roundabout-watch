@@ -53,9 +53,7 @@ def test_a_phone_video_filmed_upright_is_turned_upright(tmp_path: Path) -> None:
     assert frame.image[12:20, 12:20].mean() < 30
 
 
-@pytest.mark.parametrize(
-    ("degrees", "quarters"), [(0, 0), (-90, -1), (90, 1), (180, 2), (-180, 2)]
-)
+@pytest.mark.parametrize(("degrees", "quarters"), [(0, 0), (-90, -1), (90, 1), (180, 2), (-180, 2)])
 def test_quarter_turns(degrees: int, quarters: int) -> None:
     assert quarter_turns(degrees) % 4 == quarters % 4
 
