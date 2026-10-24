@@ -30,6 +30,9 @@ Progress = Callable[[int, int | None], None]
 @dataclass(frozen=True)
 class ReplaySummary:
     frames: int
+    # The picture's size as it plays upright, in pixels.
+    width: int
+    height: int
     video_seconds: float
     wall_seconds: float
     # One per road user the tracker followed, in order of arrival.
@@ -113,6 +116,8 @@ def replay(
     )
     return ReplaySummary(
         frames=frames,
+        width=info.width,
+        height=info.height,
         video_seconds=0.0 if first_s is None else last_s - first_s,
         wall_seconds=time.monotonic() - started,
         spans=spans,

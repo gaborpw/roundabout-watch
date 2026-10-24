@@ -6,6 +6,10 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **The marked-up video is at most 480 pixels tall** (Peter's ask,
+  2026-10-24). A phone video filmed upright filled the screen's height, so
+  the charts were below the fold; now they fit on one screen beside it.
+
 - **Pixels can become metres** (calibration, step 1 of 3; Peter's yes,
   2026-10-21). `ground.py` reads `calibration.yaml` (spots in the video
   paired with their positions from a map), fits the mapping, and says how

@@ -22,6 +22,10 @@ from roundabout_watch.replay import Progress, ReplaySummary, replay
 # written anywhere (CLAUDE.md 17).
 VIDEO_SUFFIXES = (".mov", ".mp4", ".m4v", ".mkv", ".avi")
 
+# The tallest the marked-up video is drawn, in pixels, so the charts beside
+# and under it fit on a laptop screen with it (Peter, 2026-10-24: "cap it").
+PLAYER_MAX_HEIGHT = 480
+
 
 @dataclass(frozen=True)
 class Result:
@@ -49,6 +53,15 @@ def saved_upload(data: bytes | memoryview, filename: str) -> Iterator[Path]:
         path = Path(folder) / f"upload{suffix}"
         path.write_bytes(data)
         yield path
+
+
+def player_width(width: int, height: int) -> int:
+    """The player width that keeps a width × height video at most
+    PLAYER_MAX_HEIGHT tall. Streamlit's player takes only a width, and never
+    draws wider than its column, so a wide video still fills the column."""
+    if width <= 0 or height <= 0:
+        raise ValueError("a video's size must be positive")
+    return max(1, round(PLAYER_MAX_HEIGHT * width / height))
 
 
 def load_detector(size: str) -> Detector:

@@ -6,7 +6,15 @@ import pytest
 from conftest import write_squares_video
 
 from roundabout_watch.model import Detection, Frame, RoadUser, TrackSpan
-from roundabout_watch.trial import Result, run, saved_upload, timeline, video_suffix
+from roundabout_watch.trial import (
+    PLAYER_MAX_HEIGHT,
+    Result,
+    player_width,
+    run,
+    saved_upload,
+    timeline,
+    video_suffix,
+)
 
 
 @pytest.mark.parametrize(("name", "suffix"), [("IMG_0843.MOV", ".mov"), ("clip.mp4", ".mp4")])
@@ -44,6 +52,26 @@ def test_run_keeps_only_the_drawn_copy(tmp_path: Path) -> None:
     # An MP4 starts with an "ftyp" box four bytes in.
     assert result.video[4:8] == b"ftyp"
     assert [done for done, _ in seen] == [1, 2, 3, 4]
+
+
+@pytest.mark.parametrize(
+    ("width", "height", "expected"),
+    [
+        # A phone held upright: 480 tall at 9:16 is 480 × 1080 / 1920 = 270.
+        (1080, 1920, 270),
+        # Landscape: 480 × 1920 / 1080 = 853.3, wider than most columns, so
+        # it fills its column and stays under 480 tall.
+        (1920, 1080, 853),
+    ],
+)
+def test_player_width_caps_the_height(width: int, height: int, expected: int) -> None:
+    assert PLAYER_MAX_HEIGHT == 480
+    assert player_width(width, height) == expected
+
+
+def test_player_width_refuses_an_empty_size() -> None:
+    with pytest.raises(ValueError, match="positive"):
+        player_width(0, 1080)
 
 
 def test_timeline_rows() -> None:

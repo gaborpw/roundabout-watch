@@ -108,7 +108,11 @@ if isinstance(shown, trial.Result):
     )
     left, right = st.columns([3, 2])
     with left:
-        st.video(shown.video, format="video/mp4")
+        st.video(
+            shown.video,
+            format="video/mp4",
+            width=trial.player_width(summary.width, summary.height),
+        )
         st.download_button(
             "Download the marked-up video",
             shown.video,
