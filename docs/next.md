@@ -64,10 +64,11 @@ Oldest first. Each stays here until it's done or Peter drops it.
    Pixels become metres, so speeds and near-misses can be measured. A
    phone video can be calibrated from points read off a satellite map;
    the camera gets its own once it's mounted.
-   1. The maths, `ground.py` (this pull request).
+   1. The maths, `ground.py`. **Done** (PR #17, 2026-10-21).
    2. A "Calibrate" page in the app: click the points on a frame and paste
       their map positions, to write `calibration.yaml`. It shows the fit
-      report and names the point to re-check.
+      report and names the point to re-check. **Built** (2026-10-24);
+      Peter tries it on his own video next (README, "Calibrate a video").
    3. Speeds in "Try a video". **Not before a gate:** `ground.py` builds
       from any calibration whose points fix a perspective, however badly
       they agree, so speeds are shown only from one with at least six

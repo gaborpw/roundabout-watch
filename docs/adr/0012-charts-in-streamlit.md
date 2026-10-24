@@ -45,6 +45,12 @@ The options, read on 2026-10-17:
      time, time in view and a timeline. A tried video is processed in a
      temporary folder and deleted; nothing from it is stored (ADR 0006).
      It's the first page built, because it needs no camera.
+  8. **Calibrate** (added 2026-10-24, Peter: "go ahead with step 2"):
+     pick a frame of a video, click spots on the road, paste each one's
+     latitude and longitude from a map, see how well they agree, and save
+     `calibration.yaml` for `ground.py`. Streamlit can't say where on a
+     picture someone clicked, so this page uses
+     streamlit-image-coordinates (MIT, pinned; `docs/architecture.md`).
 - **Every count of events says whether it is flagged or confirmed**
   (ADR 0002).
 - **Usage statistics off.** Streamlit sends them by default; the repo's

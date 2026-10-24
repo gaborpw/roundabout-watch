@@ -68,6 +68,27 @@ over time, how long each stayed in view, and a timeline. Nothing leaves the
 computer, and the video is deleted from the app's temporary folder when
 it's done. Stop the app with Ctrl-C in Terminal.
 
+## Calibrate a video in the app
+
+Calibration teaches the software where things are on the road, so it can
+measure in metres. Start the app as above, then click **Calibrate** in the
+sidebar.
+
+1. Choose your video and a moment with no cars over the spots you want,
+   then press **Show this frame**.
+2. Click a spot on the road surface that's easy to find on a map: a curb
+   corner, a crosswalk corner, a manhole, a lamp post's base. A red cross
+   marks it.
+3. In Google Maps on a computer, right-click the same spot, then click the
+   latitude and longitude at the top of the pop-up to copy them.
+4. Back in the app, give the spot a name, paste the numbers into
+   **Latitude, longitude**, and press **Add this spot**.
+5. Repeat for at least six spots, spread across the picture. Under "How
+   well the spots agree", smaller is better; if one spot is far worse than
+   the rest, the page says which to re-check.
+6. Press **Save as calibration.yaml**. It's saved in this folder and kept
+   out of git, because it belongs to one camera view.
+
 ## Try it on a video from the command line (the first look)
 
 On the Mac, with a video of the roundabout from the phone (AirDrop puts it in

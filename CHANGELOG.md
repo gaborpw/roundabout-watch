@@ -6,6 +6,11 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **A Calibrate page in the app** (calibration, step 2 of 3; Peter's yes,
+  2026-10-24). Click spots on a frame of a video, paste each one's map
+  position, see how well they agree and which to re-check, and save
+  calibration.yaml. The app now has a sidebar with both pages.
+
 - **Pixels can become metres** (calibration, step 1 of 3; Peter's yes,
   2026-10-21). `ground.py` reads `calibration.yaml` (spots in the video
   paired with their positions from a map), fits the mapping, and says how

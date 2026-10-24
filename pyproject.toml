@@ -19,6 +19,11 @@ dependencies = [
     # Reads calibration.yaml. Already brought by supervision and trackers.
     "pyyaml>=6.0.3",
     "streamlit>=1.66.0",
+    # Tells the Calibrate page where on the frame a person clicked; Streamlit
+    # can't. About 150 lines, MIT, read in full on 2026-10-24: it fetches
+    # nothing unless given a web address, and it's only given the frame.
+    # Pinned so a new release is read before it's used.
+    "streamlit-image-coordinates==0.4.1",
     "supervision>=0.31.0",
     "trackers>=2.6.1",
 ]
@@ -83,6 +88,11 @@ files = ["src", "tests"]
 # rfdetr is in the "detector" extra, which CI doesn't install. Where it is
 # installed, mypy checks against its own types (it ships py.typed).
 module = ["rfdetr", "rfdetr.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Ships no type information.
+module = ["streamlit_image_coordinates"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
