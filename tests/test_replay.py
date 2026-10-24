@@ -3,7 +3,7 @@ where the test video's squares are."""
 
 from pathlib import Path
 
-from conftest import square_boxes, write_squares_video
+from conftest import HEIGHT, WIDTH, square_boxes, write_squares_video
 
 from roundabout_watch.ingest import VideoFile
 from roundabout_watch.model import Detection, Frame, RoadUser
@@ -31,6 +31,7 @@ def test_replay_tracks_and_writes_a_copy(tmp_path: Path) -> None:
     write_squares_video(video, frames=12)
     summary = replay(video, out, _SquareDetector(12), progress_every=5)
     assert summary.frames == 12
+    assert (summary.width, summary.height) == (WIDTH, HEIGHT)
     # 12 frames at 25 fps: the last starts 11 / 25 s after the first.
     assert abs(summary.video_seconds - 11 / 25) < 1e-6
     # Two road users; the one called a truck once still counts as a car.
@@ -45,6 +46,15 @@ def test_replay_tracks_and_writes_a_copy(tmp_path: Path) -> None:
         assert abs(span.first_s - 1 / 25) < 1e-6
         assert abs(span.seconds - 10 / 25) < 1e-6
         assert span.frames == 11
+
+
+def test_replay_reports_the_upright_size(tmp_path: Path) -> None:
+    # Stored sideways with a -90° note, as an iPhone held upright writes it:
+    # it plays HEIGHT wide and WIDTH tall, and the app sizes its player by that.
+    video = tmp_path / "upright.mp4"
+    write_squares_video(video, frames=3, rotation=-90)
+    summary = replay(video, tmp_path / "out.mp4", _SquareDetector(3))
+    assert (summary.width, summary.height) == (HEIGHT, WIDTH)
 
 
 def test_replay_reports_progress(tmp_path: Path) -> None:
