@@ -2120,6 +2120,7 @@ dependencies = [
     { name = "opencv-python" },
     { name = "pyyaml" },
     { name = "streamlit" },
+    { name = "streamlit-image-coordinates" },
     { name = "supervision" },
     { name = "trackers" },
 ]
@@ -2150,6 +2151,7 @@ requires-dist = [
     { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "rfdetr", marker = "extra == 'detector'", specifier = ">=1.11.2" },
     { name = "streamlit", specifier = ">=1.66.0" },
+    { name = "streamlit-image-coordinates", specifier = "==0.4.1" },
     { name = "supervision", specifier = ">=0.31.0" },
     { name = "torch", marker = "sys_platform == 'win32' and extra == 'detector'", specifier = ">=2.14.1", index = "https://download.pytorch.org/whl/cu130" },
     { name = "torch", marker = "sys_platform != 'win32' and extra == 'detector'", specifier = ">=2.14.1" },
@@ -2462,6 +2464,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/7f/20/d6490a27b4985907364112f40511c8e575efe042fb05983d060c753daf1c/streamlit-1.66.1.tar.gz", hash = "sha256:7710a8b67469da7af7bf3503c9b68afca5676f832f62f9bda1221e0ce11941d1", size = 9826774, upload-time = "2026-10-21T17:02:58.805Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4a/eb/f12286b0b5c30e3fd8e45ca47f05a6cd14cb6e583d04ef4409974a17d371/streamlit-1.66.1-py3-none-any.whl", hash = "sha256:29607190a589fe1fa9bd7e154635d335d47dc09b4010c6cc273daa6e4430ee31", size = 10364948, upload-time = "2026-10-21T17:02:55.973Z" },
+]
+
+[[package]]
+name = "streamlit-image-coordinates"
+version = "0.4.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "streamlit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/1e/19/fe6d7087c27451f0a3d3063180969b77fc58b1fb4ef7db62c4428d15b08a/streamlit_image_coordinates-0.4.1.tar.gz", hash = "sha256:206795398525adeb4288aec983620377d6d700e16789dda26f4ad5c3ce14dad9", size = 6025, upload-time = "2026-08-14T15:12:30.386Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d9/b4/bb1de84d92cb9f07962dd3559809ec76c1259eb99af99437101088590b30/streamlit_image_coordinates-0.4.1-py3-none-any.whl", hash = "sha256:7cdab1b6d7688eb3c79e8d520f34e9e61c9a22766a9c217ae09f6604f7ba7e7f", size = 7787, upload-time = "2026-08-14T15:12:29.473Z" },
 ]
 
 [[package]]

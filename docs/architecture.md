@@ -55,7 +55,7 @@ one pull request at a time, in the order under "Build order".
 | `overlay.py` | Draws boxes, labels and two-second trails on the frames (supervision) and writes them as H.264 MP4 (PyAV), for `replay`'s copy. **Exists.** | yes |
 | `replay.py` | Runs a video file through ingest, detect and track and writes the drawn copy. Today it stops at tracking: no metres until `ground.py`. **Exists.** | yes, with a stand-in detector |
 | `clips.py` | Writes the packet buffer around an event to an MP4 without re-encoding, so a clip costs almost no CPU and keeps the camera's quality (ADR 0007). | yes (on a fixture clip) |
-| `app.py`, `trial.py`, `stats.py` | The Streamlit app (ADR 0012). Today one page, **Try a video**: run `replay` on a dropped-in or named video and show it drawn on, with counts, arrivals, time in view and a timeline (`trial.py` does the work, `stats.py` the numbers). **Exists.** Review, map, when, how close, who and traffic come as their data does. | yes (the page through Streamlit's AppTest, with a stand-in detector) |
+| `app.py`, `try_video.py`, `trial.py`, `stats.py`, `calibrate_page.py`, `calibrate.py` | The Streamlit app (ADR 0012). `app.py` lists the pages. **Try a video** (`try_video.py`): run `replay` on a dropped-in or named video and show it drawn on, with counts, arrivals, time in view and a timeline (`trial.py` does the work, `stats.py` the numbers). **Calibrate** (`calibrate_page.py`): click spots on a frame, paste their map positions, see how well they agree, save `calibration.yaml` (`calibrate.py` does the work, `ground.py` the fit). **Both exist.** Review, map, when, how close, who and traffic come as their data does. | yes (the pages through Streamlit's AppTest, with a stand-in detector; the picture click itself only in a browser) |
 | `enrich.py` | Optional: OHGO incidents near the roundabout, shown next to our events. | yes (on saved JSON) |
 | `__main__.py` | `python -m roundabout_watch replay <video>` (**exists**: a recorded file, on any machine); later `run` (live) and `calibrate` (helps fill `calibration.yaml`). | yes |
 
@@ -124,6 +124,7 @@ Decided in ADR 0011 (Peter's choice, 2026-10-17). Everything stays at home.
 | go2rtc | MIT | |
 | Altair | BSD-3-Clause | Draws the app's timeline chart; Streamlit uses it too. |
 | Streamlit | Apache-2.0 | Sends usage statistics by default; `.streamlit/config.toml` turns them off (ADR 0012). |
+| streamlit-image-coordinates 0.4.1 | MIT | Tells the Calibrate page where on the frame a person clicked, which Streamlit can't. About 150 lines, read in full on 2026-10-24: it fetches nothing unless given a web address, and it's only given the frame. Pinned to that version; a new one is read before it's used. |
 | numpy | BSD-3-Clause | Arrays for frames and boxes. |
 | PyTorch, torchvision | BSD-3-Clause (torch also bundles Apache-2.0, BSD-2, BSL-1.0 and MIT parts); BSD | Come with RF-DETR. On Windows they come from PyTorch's own CUDA 13.0 index, not PyPI, so the desktop's GPU is used (ADR 0011); that build also carries NVIDIA's CUDA libraries under NVIDIA's licence (general knowledge). |
 | PyAV | BSD | Its wheels bundle libx264 and libx265, which are GPL (general knowledge): it matters only if the program is ever given to anyone. |
@@ -153,9 +154,9 @@ One pull request each, each with its tests, each after Peter's yes
    1b. Rectangles instead of discs (2D-TTC), checked against the 2D-TTC
    repo's results.
 2. `config.py` and `ground.py`: calibration file, homography, reprojection
-   error, the `calibrate` helper. `ground.py` **done** (2026-10-21); next a
-   "Calibrate" page in the app to fill `calibration.yaml` by clicking, then
-   speeds in "Try a video". `config.py` comes with `flag.py`, which is the
+   error, the `calibrate` helper. `ground.py` **done** (2026-10-21), and
+   the helper is the app's **Calibrate** page (2026-10-24); next, speeds
+   in "Try a video". `config.py` comes with `flag.py`, which is the
    first thing that needs thresholds.
 3. `flag.py` + `store.py`: from tracks to flagged events in SQLite, tested
    with hand-built tracks.
@@ -168,7 +169,8 @@ One pull request each, each with its tests, each after Peter's yes
    pipeline starting by itself on the desktop.
 7. The rest of the Streamlit app: review and charts (ADR 0012), once
    `replay` or the camera has put data in the database. Its first page,
-   **Try a video**, exists (2026-10-21).
+   **Try a video**, exists (2026-10-21), and so does **Calibrate**
+   (2026-10-24).
 8. `enrich.py`: OHGO incidents.
 
 ## Sources (read 2026-10-17)

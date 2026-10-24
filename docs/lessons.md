@@ -17,6 +17,19 @@ How it works:
 
 Newest first. Format: date, what happened, cause, guard.
 
+## 2026-10-24
+
+- **The Calibrate page would have saved spots against the wrong picture
+  size** (caught by the automatic review on PR #19, before it merged).
+  Spots loaded from a saved calibration keep their pixels, and the page
+  saved them with the size of whatever frame was showing. Loaded onto a
+  bigger frame, every old pixel was still inside it, so nothing refused
+  them: only a warning showed, and Save still worked, which would have
+  given quietly wrong metres. Cause: a warning stood in for a guard.
+  Guard: on a size mismatch the page offers only "Remove the loaded
+  spots" and stops; `test_loaded_spots_from_another_size_cannot_be_saved`
+  checks there is no Save, no Download and no report, and no file written.
+
 ## 2026-10-21
 
 - **Streamlit sent Peter's email address to Streamlit on the app's first

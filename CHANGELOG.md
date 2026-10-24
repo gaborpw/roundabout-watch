@@ -6,6 +6,11 @@ Dates are when the change landed.
 
 ## Unreleased
 
+- **A Calibrate page in the app** (calibration, step 2 of 3; Peter's yes,
+  2026-10-24). Click spots on a frame of a video, paste each one's map
+  position, see how well they agree and which to re-check, and save
+  calibration.yaml. The app now has a sidebar with both pages.
+
 - **The marked-up video is at most 480 pixels tall** (Peter's ask,
   2026-10-24). A phone video filmed upright filled the screen's height, so
   the charts were below the fold; now they fit on one screen beside it.
