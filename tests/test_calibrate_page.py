@@ -105,6 +105,41 @@ def test_four_spots_ask_for_two_more() -> None:
     assert any("Add 2 more so it can check itself" in i.value for i in at.info)
 
 
+def test_loaded_spots_from_another_size_cannot_be_saved(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    # Spots picked on a 1920 × 1080 frame, then a 3840 × 2160 frame shown:
+    # every old pixel is inside the bigger frame, so nothing else would
+    # catch it, and the saved file would claim the wrong size.
+    monkeypatch.chdir(tmp_path)
+    at = _page()
+    at.session_state["cal_frame"] = np.zeros((2160, 3840, 3), dtype=np.uint8)
+    at.session_state["cal_spots"] = list(_perspective_calibration().points)
+    at.session_state["cal_loaded_size"] = (1920, 1080)
+    at.run()
+    assert not at.exception
+    assert "won't line up" in at.warning[0].value
+    keys = {b.key for b in at.button}
+    assert "cal_save" not in keys
+    assert "cal_download" not in {d.key for d in at.get("download_button")}
+    assert not at.metric
+    at.button(key="cal_clear").click().run()
+    assert not at.exception
+    assert at.session_state["cal_spots"] == []
+    assert "cal_loaded_size" not in at.session_state
+    assert not (tmp_path / "calibration.yaml").exists()
+
+
+def test_loaded_spots_on_the_same_size_can_be_saved() -> None:
+    at = _with_frame(_page())
+    at.session_state["cal_spots"] = list(_perspective_calibration().points)
+    at.session_state["cal_loaded_size"] = (1920, 1080)
+    at.run()
+    assert not at.exception
+    assert not at.warning
+    assert {m.label for m in at.metric} == {"Furthest off"}
+
+
 def test_a_spot_can_be_removed() -> None:
     at = _with_frame(_page())
     at.session_state["cal_spots"] = list(_perspective_calibration().points)

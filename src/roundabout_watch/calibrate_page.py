@@ -133,11 +133,20 @@ if isinstance(image, np.ndarray):
     spots: list[SurveyPoint] = state["cal_spots"]
     loaded_size = state.get("cal_loaded_size")
     if loaded_size is not None and loaded_size != (width, height):
+        # Their pixels belong to the other size. Saving them with this
+        # frame's size would give metres that are quietly wrong, so nothing
+        # else is offered until they're gone (review of PR #19).
         st.warning(
             f"The loaded spots were picked on a {loaded_size[0]}×{loaded_size[1]} picture "
-            f"and this frame is {width}×{height}, so they won't line up. Use a frame "
+            f"and this frame is {width}×{height}, so they won't line up. Show a frame "
             "from the same camera view, or remove them and start again."
         )
+        if st.button("Remove the loaded spots", key="cal_clear"):
+            state["cal_spots"] = []
+            state.pop("cal_loaded_size", None)
+            state.pop("cal_pending", None)
+            st.rerun()
+        st.stop()
     left, right = st.columns([3, 2])
     with left:
         click = streamlit_image_coordinates(
@@ -193,6 +202,9 @@ if isinstance(image, np.ndarray):
             )
             if st.button("Remove it", disabled=gone is None, key="cal_remove"):
                 state["cal_spots"] = [s for s in spots if s.name != gone]
+                if not state["cal_spots"]:
+                    # Nothing loaded is left, so the next frame starts fresh.
+                    state.pop("cal_loaded_size", None)
                 st.rerun()
 
     if len(spots) < MIN_POINTS:
